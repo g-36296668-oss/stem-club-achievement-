@@ -244,6 +244,14 @@
         border:1px solid var(--line);border-radius:11px;background:var(--card);font-weight:700;font-size:14px}
   .gbtn:hover{background:var(--grey-bg)}
   .gerr{color:var(--red);font-size:12.5px;margin-top:14px;min-height:16px}
+  .gclose{position:absolute;top:14px;right:16px;border:0;background:none;font-size:20px;
+          line-height:1;color:var(--muted);padding:4px}
+  .gclose:hover{color:var(--text)}
+  .gatecard{position:relative}
+  .viewonlybtn{display:block;width:100%;text-align:center;padding:8px 10px;margin-top:10px;
+               border:1px solid #24365a;border-radius:9px;background:transparent;color:#cbd5e1;
+               font-weight:600;font-size:12.5px}
+  .viewonlybtn:hover{background:rgba(148,163,184,.10);color:#fff}
 
   .acct{padding:10px 8px 0;border-top:1px solid var(--line-dk);margin-top:12px;font-size:12px;color:#94a3b8}
   .acct .who{color:#e2e8f0;font-weight:700;font-size:12.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -311,6 +319,7 @@
 
 <div id="gate">
   <div class="gatecard">
+    <button class="gclose" id="gclosebtn" onclick="gate(false)" title="Close" aria-label="Close">&times;</button>
     <img id="gatelogo" src="" alt="">
     <h2>STEM Club SMK Lutong</h2>
     <p>Competition Tracker</p>
@@ -319,7 +328,8 @@
       Sign in with your school Google account
     </button>
     <div class="gerr" id="gerr"></div>
-    <p style="margin:16px 0 0;font-size:11.5px">Only <b id="gdomain"></b> accounts are accepted.</p>
+    <p style="margin:16px 0 0;font-size:11.5px">Only <b id="gdomain"></b> accounts can edit.</p>
+    <button class="viewonlybtn" onclick="gate(false)">Continue viewing without signing in</button>
   </div>
 </div>
 <div class="savechip" id="savechip"></div>
@@ -1010,14 +1020,17 @@ function savePhoto(y){
     .catch(e => chip('Photo not saved: ' + e.code, 6000));
 }
 
-/* --- auth --- */
+/* --- auth ---
+   Anyone can VIEW without signing in. Only accounts listed in
+   config/roles.teachers (Firestore) can EDIT — sign-in is only needed
+   for that, and the gate is now an optional dialog, not a wall. */
 function signIn(){
   const p = new firebase.auth.GoogleAuthProvider();
   if(SCHOOL_DOMAIN) p.setCustomParameters({hd: SCHOOL_DOMAIN, prompt: 'select_account'});
   firebase.auth().signInWithPopup(p).catch(e => { $('gerr').textContent = e.message; });
 }
 function signOut(){ firebase.auth().signOut(); }
-function gate(show){ $('gate').classList.toggle('on', show); }
+function gate(show){ $('gerr').textContent = ''; $('gate').classList.toggle('on', show); }
 
 function bootCloud(){
   $('gatelogo').src = LOGO();
@@ -1026,22 +1039,26 @@ function bootCloud(){
 
   firebase.initializeApp(FIREBASE);
   db = firebase.firestore();
+  listen();                                          /* start loading data for everyone right away */
 
   firebase.auth().onAuthStateChanged(async user => {
     me = user;
-    if(!user){ canEdit = false; gate(true); updateAcct(); return; }
-    if(SCHOOL_DOMAIN && !(user.email || '').toLowerCase().endsWith('@' + SCHOOL_DOMAIN)){
-      $('gerr').textContent = 'That is not a school account. Please use @' + SCHOOL_DOMAIN;
-      await firebase.auth().signOut(); return;
+    canEdit = false;
+    if(user){
+      if(SCHOOL_DOMAIN && !(user.email || '').toLowerCase().endsWith('@' + SCHOOL_DOMAIN)){
+        $('gerr').textContent = 'That is not a school account. Please use @' + SCHOOL_DOMAIN;
+        await firebase.auth().signOut();
+        updateAcct();
+        return;
+      }
+      try{
+        const roles = await db.collection('config').doc('roles').get();
+        const list = ((roles.data() || {}).teachers || []).map(e => String(e).toLowerCase());
+        canEdit = list.includes(user.email.toLowerCase());
+      }catch(e){ canEdit = false; }
     }
-    try{
-      const roles = await db.collection('config').doc('roles').get();
-      const list = ((roles.data() || {}).teachers || []).map(e => String(e).toLowerCase());
-      canEdit = list.includes(user.email.toLowerCase());
-    }catch(e){ canEdit = false; }
     gate(false);
-    listen();
-    updateAcct();
+    render();          /* re-apply role so editing controls show/hide correctly */
   });
 }
 
@@ -1077,7 +1094,11 @@ function updateAcct(){
       See <b>SETUP-Firebase.md</b>.</div>`;
     return;
   }
-  if(!me){ el.innerHTML = ''; return; }
+  if(!me){
+    el.innerHTML = `<span class="rolepill r-view">View only</span>
+      <button class="viewonlybtn" style="margin-top:9px" onclick="gate(true)">Sign in to edit</button>`;
+    return;
+  }
   el.innerHTML = `<div class="who" title="${esc(me.email)}">${esc(me.displayName || me.email)}</div>
     <div class="row2">
       <span class="rolepill ${canEdit ? 'r-edit' : 'r-view'}">${canEdit ? 'Teacher' : 'View only'}</span>
