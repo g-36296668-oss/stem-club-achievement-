@@ -103,6 +103,14 @@
       display:grid;place-items:center;font-size:10px;font-weight:700;border:2px solid #fff;margin-left:-7px}
   .av:first-child{margin-left:0}
   .empty{padding:32px;text-align:center;color:var(--muted)}
+  .grip{cursor:grab;color:#c3c8d0;font-size:17px;line-height:1;padding:2px 4px;user-select:none;flex-shrink:0}
+  .grip:active{cursor:grabbing}
+  .item.dragging{opacity:.35}
+  .item.over-top{box-shadow:inset 0 3px 0 var(--accent)}
+  .item.over-bot{box-shadow:inset 0 -3px 0 var(--accent)}
+  .ord{display:flex;flex-direction:column;gap:2px}
+  .ord button{border:1px solid var(--line);background:var(--card);border-radius:6px;
+              line-height:1;padding:2px 6px;font-size:11px;color:var(--muted)}
   .ticon{width:40px;height:40px;flex-shrink:0;border-radius:10px;background:var(--accent-soft);
          display:grid;place-items:center;font-size:19px}
   .cap{font-size:12px;color:var(--muted);margin-top:6px}
@@ -151,6 +159,50 @@
   .info{background:var(--accent-soft);color:var(--accent);border:1px solid #c7d7fe;padding:10px 13px;
         border-radius:9px;font-size:12.5px;display:block;margin-bottom:16px}
 
+  /* ---------- wall of fame ---------- */
+  .hero{background:linear-gradient(135deg,#1e3a8a 0%,#1d4ed8 55%,#3b82f6 100%);color:#fff;
+        border-radius:16px;padding:26px 28px;display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+  .hero img{height:78px;width:auto;filter:drop-shadow(0 3px 6px rgba(0,0,0,.28))}
+  .hero h1{color:#fff;font-size:30px;margin:0;letter-spacing:-.04em}
+  .hero p{margin:4px 0 0;opacity:.85;font-size:13.5px}
+  .hero .tally{margin-left:auto;display:flex;gap:20px;text-align:center}
+  .hero .tally div span{display:block;font-size:30px;font-weight:800;line-height:1.1;font-variant-numeric:tabular-nums}
+  .hero .tally div small{opacity:.85;font-size:11px;text-transform:uppercase;letter-spacing:.07em;font-weight:700}
+
+  .photoband{position:relative;border-radius:14px;overflow:hidden;border:1px solid var(--line);
+             background:var(--card);margin:14px 0 6px}
+  .photoband img{width:100%;display:block;max-height:360px;object-fit:cover}
+  .photoband .tools{position:absolute;top:10px;right:10px;display:flex;gap:6px}
+  .photoband .tools button{background:rgba(17,24,39,.72);color:#fff;border:0;border-radius:7px;
+                           padding:5px 10px;font-size:12px;font-weight:600;backdrop-filter:blur(4px)}
+  .photoband .cap2{padding:9px 14px;font-size:12.5px;color:var(--muted);display:flex;
+                   justify-content:space-between;gap:10px;border-top:1px solid var(--line)}
+  .dropzone{border:2px dashed var(--line);border-radius:14px;background:var(--card);
+            padding:30px 20px;text-align:center;color:var(--muted);cursor:pointer;margin:14px 0 6px}
+  .dropzone:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+  .dropzone .big{font-size:28px;line-height:1}
+  .yearhead{display:flex;align-items:baseline;gap:12px;margin:34px 0 0;flex-wrap:wrap}
+  .yearhead h2{font-size:20px;margin:0;letter-spacing:-.03em}
+  .yearhead .t{color:var(--muted);font-size:13px}
+  .fame{display:grid;grid-template-columns:repeat(auto-fill,minmax(268px,1fr));gap:12px}
+  .fcard{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--line);
+         border-radius:12px;padding:14px 16px}
+  .fcard.gold{border-left-color:#eab308;background:linear-gradient(90deg,#fffdf3,#fff 55%)}
+  .fcard.silver{border-left-color:#94a3b8;background:linear-gradient(90deg,#f8fafc,#fff 55%)}
+  .fcard.bronze{border-left-color:#c98a5b;background:linear-gradient(90deg,#fff8f2,#fff 55%)}
+  .fcard.special{border-left-color:#a855f7;background:linear-gradient(90deg,#faf5ff,#fff 55%)}
+  .fcard .res{font-weight:800;font-size:14px;letter-spacing:-.015em}
+  .fcard .names{margin-top:6px;font-size:13.5px;line-height:1.45}
+  .fcard .ev{margin-top:8px;color:var(--muted);font-size:12px;border-top:1px solid var(--line);padding-top:8px}
+
+  @media print{
+    .sidebar,.nav,.fab,.noprint{display:none !important}
+    body{background:#fff}
+    .main{padding:0;max-width:none}
+    .hero{background:#1d4ed8 !important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .fcard{break-inside:avoid;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .fame{grid-template-columns:1fr 1fr}
+  }
   @media(max-width:860px){
     .app{flex-direction:column}
     .sidebar{width:100%;height:auto;position:sticky;top:0;z-index:30;padding:10px;
@@ -163,6 +215,9 @@
     .main{padding:18px 16px 90px}
     .hide-sm{display:none}
     .bar-row{grid-template-columns:120px 1fr 34px;font-size:12px}
+    .hero{padding:20px}.hero h1{font-size:22px}.hero img{height:56px}
+    .hero .tally{margin-left:0;width:100%;justify-content:space-between;gap:8px}
+    .hero .tally div span{font-size:24px}
     .fab{position:fixed;right:18px;bottom:18px;z-index:35;border-radius:999px;padding:14px 20px;
          box-shadow:0 8px 24px rgba(29,78,216,.35)}
   }
@@ -196,7 +251,10 @@
    ============================================================ */
 const TODAY = new Date('2026-08-10');
 
-const ADVISORS = ['—','Ms. Lim','En. Faizal','Pn. Kaur','Mr. Tan'];
+/* Teachers — add your real names under Settings › Teachers */
+let teachers = [];
+const teacherName = id => (teachers.find(t => t.id === id) || {}).name || '';
+const teacherLabel = id => teacherName(id) || '—';
 const LEVELS   = ['School','District','State','National','International'];
 const STATUSES = ['Draft','Open','Ongoing','Completed','Closed'];
 const RESULTS  = ['—','Champion / Johan','Platinum','Gold','Silver','Bronze',
@@ -214,6 +272,7 @@ let types = [
   {id:6, name:'Engineering', icon:'⚙️'},
   {id:7, name:'Exhibition',  icon:'🎪'},
   {id:8, name:'Exchange',    icon:'🌏'},
+  {id:9, name:'Arduino',     icon:'🔌'},
 ];
 const ICON_CHOICES = ['🤖','💻','🔬','📐','💡','⚙️','🎪','🌏','🔭','🧪','🚀','🌱','🎯','🏆'];
 
@@ -221,16 +280,74 @@ let years = [2026];
 
 /* Club namelist — carries across every session */
 let students = [
-  {id:1,name:'Labeeb',cls:''},      {id:2,name:'Deborah',cls:''},
-  {id:3,name:'Isabelle',cls:''},    {id:4,name:'Laiqa',cls:''},
-  {id:5,name:'Lee Wynn',cls:''},    {id:6,name:'Lee Sun',cls:''},
-  {id:7,name:'Lukesh',cls:''},      {id:8,name:'Leanne',cls:''},
-  {id:9,name:'Shavonne',cls:''},    {id:10,name:'Jayden',cls:''},
-  {id:11,name:'Sean Lau',cls:''},   {id:12,name:'Jacob',cls:''},
-  {id:13,name:'Law En Ning',cls:''},{id:14,name:'Aliscesia',cls:''},
-  {id:15,name:'Maximus',cls:''},    {id:16,name:'Loon Kai Rou',cls:''},
-  {id:17,name:'Iann Lau',cls:''},   {id:18,name:'Nabiha',cls:''},
-  {id:19,name:'Ling G.Y.',cls:''},
+  {id:1,name:"Muhammad Labeeb Aryan bin Mohd Lokman",cls:"3 Newton"},
+  {id:2,name:"Deborah Wong En Xuan",cls:"3 Avicenna"},
+  {id:3,name:"Isabelle Hii Yi Shin",cls:"3 Einstein"},
+  {id:4,name:"Laiqa Ashadieeyah binti Mohd Lokman",cls:"3 Newton"},
+  {id:5,name:"Lee Wynn",cls:"3 Newton"},
+  {id:6,name:"Lee Sun",cls:"4 Einstein"},
+  {id:7,name:"Lukesh a/l Murugayah",cls:"4 Einstein"},
+  {id:8,name:"Leann Yii Zhen",cls:"4 Einstein"},
+  {id:9,name:"Shavonne",cls:"3 Avicenna"},
+  {id:10,name:"Jayden Wayne",cls:"3 Avicenna"},
+  {id:11,name:"Sean Lau",cls:"3 Einstein"},
+  {id:12,name:"Jacob Gabriel Law",cls:"2 Avicenna"},
+  {id:13,name:"Law En Ning",cls:"2 Avicenna"},
+  {id:14,name:"Alicesia Limbun anak Mangang",cls:"2 Avicenna"},
+  {id:15,name:"Maximus Goh",cls:"4 Avicenna"},
+  {id:16,name:"Loon Kai Rou",cls:"4 Einstein"},
+  {id:17,name:"Iann Lau",cls:"3 Avicenna"},
+  {id:18,name:"Nabiha Zaidi",cls:"3 Einstein"},
+  {id:19,name:"Ling G.Y.",cls:""},
+  {id:20,name:"Ryan Brunai",cls:"2 Avicenna"},
+  {id:21,name:"Maleakhi",cls:"2 Hawking"},
+  {id:22,name:"Mdhd. Iman",cls:"2 Hawking"},
+  {id:23,name:"Lee Shueh Chien",cls:"2 Einstein"},
+  {id:24,name:"Ting Zhen Yu",cls:"2 Einstein"},
+  {id:25,name:"Aldwin Hii Lu Chen",cls:"2 Einstein"},
+  {id:26,name:"Roger Wong Kai Qing",cls:"2 Hawking"},
+  {id:27,name:"Chloe Tang Sze Xin",cls:"2 Einstein"},
+  {id:28,name:"Rachel Tang Xiao Xuan",cls:"2 Avicenna"},
+  {id:29,name:"Isaac Hii Lu Chen",cls:"1 Einstein"},
+  {id:30,name:"Irvin Yong",cls:"1 Einstein"},
+  {id:31,name:"Goh Xian Yee",cls:"1 Einstein"},
+  {id:32,name:"Jayden Voon Wen Sheng",cls:"1 Hawking"},
+  {id:33,name:"Delon Phang Zhi Long",cls:"1 Avicenna"},
+  {id:34,name:"Amandalylee",cls:"3 Avicenna"},
+  {id:35,name:"Amberlylee",cls:"4 Avicenna"},
+  {id:36,name:"Darrell",cls:"4 Avicenna"},
+  {id:37,name:"Theolada",cls:"3 Newton"},
+  {id:38,name:"Ezrayen",cls:"3 Newton"},
+  {id:39,name:"Alicia Lim Ghzi Qinn",cls:"4 Einstein"},
+  {id:40,name:"Dayangku Zulaikha",cls:"4 Einstein"},
+  {id:41,name:"Dayangku Zuraida",cls:"3 Avicenna"},
+  {id:42,name:"Aisley Wong Xiang Yuang",cls:"4 Amanah"},
+  {id:43,name:"Carmen Lee Jia Min",cls:"4 Avicenna"},
+  {id:44,name:"Augustine Koay",cls:"4 Einstein"},
+  {id:45,name:"Leonard Yu Ann Chen",cls:"4 Einstein"},
+  {id:46,name:"Ngu Qian Jing",cls:"4 Avicenna"},
+  {id:47,name:"Allen Wong Li Chai",cls:"4 Einstein"},
+  {id:48,name:"Cleverly",cls:"1 Avicenna"},
+  {id:49,name:"Alaizter",cls:"1 Hawking"},
+  {id:50,name:"Qisya",cls:"1 Newton"},
+  {id:51,name:"Leon Kon Chien Le",cls:"1 Avicenna"},
+  {id:52,name:"Nadzreen Feeraz bin Nazrul Nizar",cls:"1 Avicenna"},
+  {id:53,name:"Royston Chan",cls:"1 Newton"},
+  {id:54,name:"Lamia",cls:"1 Einstein"},
+  {id:55,name:"Aliah",cls:"1 Newton"},
+  {id:56,name:"Amarachi",cls:"1 Newton"},
+  {id:57,name:"Harris",cls:"1 Einstein"},
+  {id:58,name:"Ivan",cls:"1 Einstein"},
+  {id:59,name:"Leonard",cls:"1 Newton"},
+  {id:60,name:"Mckenzie",cls:"1 Einstein"},
+  {id:61,name:"Rizqi",cls:"1 Einstein"},
+  {id:62,name:"Eliyahu",cls:"1 Hawking"},
+  {id:63,name:"Annice",cls:"1 Einstein"},
+  {id:64,name:"Ram Ng Qi Ran",cls:"1 Einstein"},
+  {id:65,name:"Ella",cls:"1 Einstein"},
+  {id:66,name:"Chieng Shao Yuen",cls:"1 Newton"},
+  {id:67,name:"Jayden",cls:"1 Avicenna"},
+  {id:68,name:"Alvis Chan",cls:"1 Newton"}
 ];
 
 /* 2026 record, as supplied. teams = number of teams entered;
@@ -273,38 +390,66 @@ let competitions = [
    level:'District', type:7, teams:1, maxMembers:4, venue:'', organiser:'PPD', status:'Open'},
   {id:18,year:2026, name:'GirlCode', date:'2026-07-18', dateText:'18 Jul – Okt 2026',
    level:'National', type:2, teams:1, maxMembers:4, venue:'', organiser:'', status:'Ongoing'},
+  {id:19,year:2026, name:'Arduino Project 2026', date:'', dateText:'Sepanjang tahun 2026',
+   level:'School', type:9, teams:23, maxMembers:3, venue:'SMK Lutong', organiser:'STEM Club',
+   status:'Ongoing', teacher:null},
 ];
 
 let entries = [
-  {id:1, comp:1, name:'Team 1', members:[1], advisor:'—', status:'Completed', result:'2nd Runner-up', award:''},
-  {id:2, comp:2, name:'Team 1', members:[], advisor:'—', status:'Completed', result:'Champion / Johan', award:''},
-  {id:3, comp:4, name:'Team 1', members:[1,2,3], advisor:'—', status:'Completed', result:'Platinum', award:'Best Presenter (Labeeb)'},
-  {id:4, comp:4, name:'Team 2', members:[4,5], advisor:'—', status:'Completed', result:'—', award:'Best Idea'},
-  {id:5, comp:5, name:'Team 1', members:[2], advisor:'—', status:'Completed', result:'Gold', award:''},
-  {id:6, comp:5, name:'Team 2', members:[6,7,8], advisor:'—', status:'Completed', result:'Gold', award:''},
-  {id:7, comp:6, name:'Team 1', members:[1,2,3], advisor:'—', status:'Completed', result:'Gold', award:''},
-  {id:8, comp:6, name:'Team 2', members:[5,4], advisor:'—', status:'Completed', result:'Silver', award:''},
-  {id:9, comp:6, name:'Team 3', members:[9,10,11], advisor:'—', status:'Completed', result:'Silver', award:''},
-  {id:10,comp:6, name:'Team 4', members:[12,13,14], advisor:'—', status:'Completed', result:'Silver', award:''},
-  {id:11,comp:6, name:'Team 5', members:[6,8,7], advisor:'—', status:'Completed', result:'Bronze', award:''},
-  {id:12,comp:6, name:'Team 6', members:[15,16,17], advisor:'—', status:'Completed', result:'Bronze', award:''},
-  {id:13,comp:10,name:'Team 1', members:[18], advisor:'—', status:'Completed', result:'Bronze', award:''},
-  {id:14,comp:11,name:'Team 1', members:[15], advisor:'—', status:'Completed', result:'Finalist', award:''},
-  {id:15,comp:12,name:'Team 1', members:[1,3,2,19], advisor:'—', status:'Completed', result:'Bronze', award:''},
-  {id:16,comp:13,name:'Team 1', members:[], advisor:'—', status:'Completed', result:'Champion / Johan', award:'Peringkat daerah'},
-  {id:17,comp:14,name:'Team 1', members:[], advisor:'—', status:'Completed', result:'3rd place / Tempat Ketiga', award:''},
-  {id:18,comp:15,name:'Team 1', members:[], advisor:'—', status:'Completed', result:'3rd place / Tempat Ketiga', award:''},
-  {id:19,comp:15,name:'Team 2', members:[], advisor:'—', status:'Completed', result:'4th place / Tempat Keempat', award:''},
-  {id:20,comp:16,name:'Team 1', members:[1,14], advisor:'—', status:'Completed', result:'Special Award', award:'Best People Award'},
-  {id:21,comp:17,name:'Team 1', members:[12,13,14], advisor:'—', status:'Confirmed', result:'—', award:''},
-  {id:22,comp:18,name:'Team 1', members:[2,3], advisor:'—', status:'Confirmed', result:'—', award:''},
+  {id:1, comp:1, name:'Team 1', members:[1], teacher:null, status:'Completed', result:'2nd Runner-up', award:''},
+  {id:2, comp:2, name:'Team 1', members:[], teacher:null, status:'Completed', result:'Champion / Johan', award:''},
+  {id:3, comp:4, name:'Team 1', members:[1,2,3], teacher:null, status:'Completed', result:'Platinum', award:'Best Presenter (Labeeb)'},
+  {id:4, comp:4, name:'Team 2', members:[4,5], teacher:null, status:'Completed', result:'—', award:'Best Idea'},
+  {id:5, comp:5, name:'Team 1', members:[2], teacher:null, status:'Completed', result:'Gold', award:''},
+  {id:6, comp:5, name:'Team 2', members:[6,7,8], teacher:null, status:'Completed', result:'Gold', award:''},
+  {id:7, comp:6, name:'Team 1', members:[1,2,3], teacher:null, status:'Completed', result:'Gold', award:''},
+  {id:8, comp:6, name:'Team 2', members:[5,4], teacher:null, status:'Completed', result:'Silver', award:''},
+  {id:9, comp:6, name:'Team 3', members:[9,10,11], teacher:null, status:'Completed', result:'Silver', award:''},
+  {id:10,comp:6, name:'Team 4', members:[12,13,14], teacher:null, status:'Completed', result:'Silver', award:''},
+  {id:11,comp:6, name:'Team 5', members:[6,8,7], teacher:null, status:'Completed', result:'Bronze', award:''},
+  {id:12,comp:6, name:'Team 6', members:[15,16,17], teacher:null, status:'Completed', result:'Bronze', award:''},
+  {id:13,comp:10,name:'Team 1', members:[18], teacher:null, status:'Completed', result:'Bronze', award:''},
+  {id:14,comp:11,name:'Team 1', members:[15], teacher:null, status:'Completed', result:'Finalist', award:''},
+  {id:15,comp:12,name:'Team 1', members:[1,3,2,19], teacher:null, status:'Completed', result:'Bronze', award:''},
+  {id:16,comp:13,name:'Team 1', members:[], teacher:null, status:'Completed', result:'Champion / Johan', award:'Peringkat daerah'},
+  {id:17,comp:14,name:'Team 1', members:[], teacher:null, status:'Completed', result:'3rd place / Tempat Ketiga', award:''},
+  {id:18,comp:15,name:'Team 1', members:[], teacher:null, status:'Completed', result:'3rd place / Tempat Ketiga', award:''},
+  {id:19,comp:15,name:'Team 2', members:[], teacher:null, status:'Completed', result:'4th place / Tempat Keempat', award:''},
+  {id:20,comp:16,name:'Team 1', members:[1,14], teacher:null, status:'Completed', result:'Special Award', award:'Best People Award'},
+  {id:21,comp:17,name:'Team 1', members:[12,13,14], teacher:null, status:'Confirmed', result:'—', award:''},
+  {id:22,comp:18,name:'Team 1', members:[2,3], teacher:null, status:'Confirmed', result:'—', award:''},
+  /* Arduino Project 2026 — imported from "2026 Arduino.xlsx" */
+  {id:23,comp:19,name:"Triple Trouble",members:[14,13,12],teacher:null,status:'Confirmed',result:'—',award:'',idea:"An app that can detect fatigue to prevent car accidents."},
+  {id:24,comp:19,name:"The Cyber Dudes",members:[20,21,22],teacher:null,status:'Confirmed',result:'—',award:'',idea:"A robot that collects trash in drains and rivers"},
+  {id:25,comp:19,name:"Code Crushers",members:[23,24,25],teacher:null,status:'Confirmed',result:'—',award:'',idea:"An app that can read out words for blind people"},
+  {id:26,comp:19,name:"Low battery",members:[26,27,28],teacher:null,status:'Confirmed',result:'—',award:'',idea:"AI Smart plant care system"},
+  {id:27,comp:19,name:"Unnamed team 5",members:[29,30,31],teacher:null,status:'Confirmed',result:'—',award:'',idea:"This project aim to help pet owners feed their pets on time,even when they are busy or not at home"},
+  {id:28,comp:19,name:"Unnamed team 6",members:[32,33],teacher:null,status:'Confirmed',result:'—',award:'',idea:""},
+  {id:29,comp:19,name:"Powerpuff Girls",members:[1,2,3],teacher:null,status:'Confirmed',result:'—',award:'',idea:"ScamShield"},
+  {id:30,comp:19,name:"Synapse Pair",members:[5,4],teacher:null,status:'Confirmed',result:'—',award:'',idea:"creating a portable food quality detection device"},
+  {id:31,comp:19,name:"STEMfinity",members:[34,35,36],teacher:null,status:'Confirmed',result:'—',award:'',idea:"classify the temperature of a weather for the soi"},
+  {id:32,comp:19,name:"The Three Boys",members:[10,11,9],teacher:null,status:'Confirmed',result:'—',award:'',idea:"To collect trash from drains"},
+  {id:33,comp:19,name:"TriHard",members:[18,37,38],teacher:null,status:'Confirmed',result:'—',award:'',idea:"An app that can detect the users emotional stress and response by specific songs that traditionally helps calm different emotional stress"},
+  {id:34,comp:19,name:"Hopecore",members:[6,8,7],teacher:null,status:'Confirmed',result:'—',award:'',idea:""},
+  {id:35,comp:19,name:"Innov8",members:[16,15,17],teacher:null,status:'Confirmed',result:'—',award:'',idea:"to detect and gain elderly muscles"},
+  {id:36,comp:19,name:"CircuitSparks",members:[39,40,41],teacher:null,status:'Confirmed',result:'—',award:'',idea:"A low cost and chemical free Ai monitoring system for microplastic detection in water"},
+  {id:37,comp:19,name:"Camsley",members:[42,43,44],teacher:null,status:'Confirmed',result:'—',award:'',idea:"Replace prefect's duty on checking attire and tidyness with AI"},
+  {id:38,comp:19,name:"All I Know",members:[45,46,47],teacher:null,status:'Confirmed',result:'—',award:'',idea:"Provide an antibully app to reduce the bully case in SMK Lutong"},
+  {id:39,comp:19,name:"LUQUID",members:[48,49,50],teacher:null,status:'Confirmed',result:'—',award:'',idea:"water polution - kutip sampah"},
+  {id:40,comp:19,name:"MARADIN",members:[51,52,53],teacher:null,status:'Confirmed',result:'—',award:'',idea:"wind turbine"},
+  {id:41,comp:19,name:"BULBERCREATZ",members:[54,55,56],teacher:null,status:'Confirmed',result:'—',award:'',idea:"LIFE IN OCEAN - COLLECT RUBBISH"},
+  {id:42,comp:19,name:"INTER TECH",members:[57,58,59],teacher:null,status:'Confirmed',result:'—',award:'',idea:"RUBBISH BIN (CHANGE)"},
+  {id:43,comp:19,name:"INTERSTELLAR",members:[60,61,62],teacher:null,status:'Confirmed',result:'—',award:'',idea:"WATER FILTER -"},
+  {id:44,comp:19,name:"NEVER TRY",members:[63,64,65],teacher:null,status:'Confirmed',result:'—',award:'',idea:"GAME FOR EDUCATION"},
+  {id:45,comp:19,name:"THE LIFE",members:[66,67,68],teacher:null,status:'Confirmed',result:'—',award:'',idea:"PICK UP RUBBISH IN SCHOOL"}
 ];
 
-let nextId = {comp:19, entry:23, type:9, student:20};
+let nextId = {comp:20, entry:46, type:10, student:69, teacher:1};
 
 /* ============================ STATE ============================ */
 let state = {year:2026, view:'dashboard', compId:null, q:'', level:'All', status:'All',
-             type:'All', expanded:null, reportLevel:'All', sfilter:'Active'};
+             type:'All', expanded:null, reportLevel:'All', sfilter:'Active', sort:'date', wallAll:false};
+let dragId = null;
 let draft = null, memberQuery = '', importText = '';
 
 /* ============================ HELPERS ============================ */
@@ -338,6 +483,13 @@ const plusIcon = () => `<svg width="13" height="13" viewBox="0 0 24 24" fill="no
 const typeTag = id => { const t = typeOf(id);
   return `<span class="lvl" style="background:var(--accent-soft);color:var(--accent);border-color:transparent">${t.icon} ${esc(t.name)}</span>`; };
 const showDate = c => c.dateText || (c.date ? fmtDate(c.date) : 'No date');
+const normName = s => String(s).toLowerCase().replace(/[^a-z0-9]/g,'');
+function dupGroups(y){
+  const map = {};
+  compsOf(y).forEach(c => (map[normName(c.name)] ||= []).push(c));
+  return Object.values(map).filter(g => g.length > 1);
+}
+const isDup = c => dupGroups(c.year).some(g => g.some(x => x.id === c.id));
 const fmtDate = d => new Date(d).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
 const daysLeft = d => Math.ceil((new Date(d) - TODAY) / 86400000);
 
@@ -366,7 +518,8 @@ function yearStats(y){
 
 /* ============================ SHELL ============================ */
 const VIEWS = [['dashboard','◧','Dashboard'], ['competitions','▤','Competitions'],
-               ['students','◔','Students'], ['reports','◑','Reports'], ['settings','⚙','Settings']];
+               ['students','◔','Students'], ['wall','🏆','Wall of Fame'],
+               ['reports','◑','Reports'], ['settings','⚙','Settings']];
 function renderChrome(){
   const active = state.view === 'competition' ? 'competitions' : state.view;
   $('nav').innerHTML = VIEWS.map(([k,i,l]) =>
@@ -404,6 +557,7 @@ function render(){
     state.view === 'competitions' ? compList()  :
     state.view === 'competition'  ? compDetail():
     state.view === 'students'     ? studentList() :
+    state.view === 'wall'         ? wall() :
     state.view === 'settings'     ? settings() : reports();
 }
 
@@ -463,11 +617,18 @@ function compList(){
       c.name.toLowerCase().includes(state.q.toLowerCase()) &&
       (state.level === 'All' || c.level === state.level) &&
       (state.type === 'All' || c.type === state.type) &&
-      (state.status === 'All' || c.status === state.status))
-    .sort((a,b) => (b.date || '0').localeCompare(a.date || '0'));
+      (state.status === 'All' || c.status === state.status));
+  if(state.sort === 'custom'){ ensureOrd(state.year); rows.sort((a,b) => a.ord - b.ord); }
+  else rows.sort((a,b) => (b.date || '0').localeCompare(a.date || '0'));
+  const drag = state.sort === 'custom';
 
   const total = yearComps().length;
+  const dups = dupGroups(state.year);
+  const extra = dups.reduce((n,g) => n + g.length - 1, 0);
   return `
+  ${dups.length ? `<p><span class="banner">⧉ ${dups.length} competition name${dups.length>1?'s appear':' appears'} more than once
+     (${extra} extra entr${extra===1?'y':'ies'}).
+     <button class="btn sm" style="margin-left:8px" onclick="openDupes()">Review duplicates</button></span></p>` : ''}
   <div class="spread">
     <div><h1>Competitions ${state.year}</h1><p class="sub">Showing ${rows.length} of ${total} ·
       ${yearStats(state.year).teams} team entries this year</p></div>
@@ -485,23 +646,42 @@ function compList(){
     </select>
   </div>
   <div class="row" style="margin-bottom:14px">
+    <span style="font-size:12.5px;color:var(--muted);font-weight:600">Order:</span>
+    <button class="chip ${state.sort==='date'?'on':''}" onclick="setSort('date')">By date</button>
+    <button class="chip ${state.sort==='custom'?'on':''}" onclick="setSort('custom')">⠿ My order</button>
+    ${state.sort==='custom' ? '<button class="chip" onclick="resetOrder()">↺ Reset to date</button>' : ''}
+  </div>
+
+  <div class="row" style="margin-bottom:14px">
     <button class="chip ${state.type==='All'?'on':''}" onclick="state.type='All';render()">All types</button>
     ${types.map(t => `<button class="chip ${state.type===t.id?'on':''}" onclick="state.type=${t.id};render()">${t.icon} ${esc(t.name)}</button>`).join('')}
     <button class="chip" onclick="go('settings')">⚙ Manage types</button>
   </div>
 
+  ${drag ? `<div class="cap" style="margin:-6px 0 8px">Drag the ⠿ handle to rearrange, or use ▲▼ on a phone.
+     Your order is remembered for ${state.year} only.${
+     (state.q || state.level!=='All' || state.type!=='All' || state.status!=='All')
+       ? ' <b class="full">Clear the filters first</b> — dragging a filtered list can be confusing.' : ''}</div>` : ''}
   <div class="card list">
     ${rows.map(c => {
       const named = entriesOf(c.id).length;
-      return `<div class="item" onclick="go('competition',${c.id})">
+      return `<div class="item" onclick="go('competition',${c.id})"
+        ${drag ? `draggable="true" ondragstart="dragStart(event,${c.id})" ondragover="dragOver(event)"
+                  ondragleave="dragLeave(event)" ondrop="dropComp(event,${c.id})" ondragend="dragEnd(event)"` : ''}>
       <div class="row" style="gap:12px;flex-wrap:nowrap;min-width:0">
+        ${drag ? '<div class="grip" title="Drag to move">⠿</div>' : ''}
         <div class="ticon">${typeOf(c.type).icon}</div>
         <div style="min-width:0">
-          <div class="title">${esc(c.name)}</div>
+          <div class="title">${esc(c.name)} ${isDup(c) ? '<span class="pill p-closed">duplicate name</span>' : ''}</div>
           <div class="meta">${typeTag(c.type)} <span class="lvl">${c.level}</span> ${esc(showDate(c))} ${statusPill(c.status)}</div>
         </div>
       </div>
-      <div class="count">${teamCount(c)} <span>teams${named ? ` · ${named} named` : ''}</span></div>
+      <div class="row" style="gap:10px;flex-wrap:nowrap">
+        <div class="count">${teamCount(c)} <span>teams${named ? ` · ${named} named` : ''}</span></div>
+        ${drag ? `<div class="ord">
+          <button onclick="event.stopPropagation();moveComp(${c.id},-1)" title="Move up">▲</button>
+          <button onclick="event.stopPropagation();moveComp(${c.id},1)" title="Move down">▼</button></div>` : ''}
+      </div>
     </div>`;}).join('') || '<div class="empty">Nothing matches those filters — try clearing one.</div>'}
   </div>
   <button class="btn primary fab" onclick="openComp()">${plusIcon()} Competition</button>`;
@@ -522,11 +702,13 @@ function compDetail(){
       <p class="sub">${typeTag(c.type)} <span class="lvl">${c.level}</span> ${esc(showDate(c))}
         ${c.venue ? '· ' + esc(c.venue) : ''} ${c.organiser ? '· ' + esc(c.organiser) : ''}
         ${dl !== null && dl >= 0 ? `<b>· in ${dl} days</b>` : ''}<br>
-        ${statusPill(c.status)} &nbsp;·&nbsp; team size: up to <b>${c.maxMembers}</b> students</p>
+        ${statusPill(c.status)} &nbsp;·&nbsp; team size: up to <b>${c.maxMembers}</b> students${
+          c.teacher ? ` &nbsp;·&nbsp; teacher: <b>${esc(teacherName(c.teacher))}</b>` : ''}</p>
     </div>
     <div class="row">
       <button class="btn sm" onclick="openComp(${c.id})">✎ Edit</button>
-      <button class="btn sm" onclick="duplicateComp(${c.id})">⧉ Duplicate</button>
+      <button class="btn sm" onclick="duplicateComp(${c.id})">⧉ Copy</button>
+      <button class="btn sm danger" onclick="delComp(${c.id})">✕ Delete</button>
       <button class="btn primary" onclick="openGroup(${c.id})">${plusIcon()} Add team</button>
     </div>
   </div>
@@ -543,7 +725,7 @@ function compDetail(){
 
   <div class="card">
     <table>
-      <thead><tr><th>Team</th><th>Students</th><th class="hide-sm">Teacher advisor</th><th>Status</th><th>Achievement</th><th></th></tr></thead>
+      <thead><tr><th>Team</th><th>Students</th><th class="hide-sm">Teacher</th><th>Status</th><th>Achievement</th><th></th></tr></thead>
       <tbody>
       ${es.map(e => `
         <tr class="entry" onclick="toggle(${e.id})">
@@ -553,7 +735,7 @@ function compDetail(){
                      <div class="avatars">${e.members.slice(0,4).map(m=>`<div class="av">${initials(student(m).name)}</div>`).join('')}</div>
                      <span style="color:var(--muted)">${e.members.length}/${c.maxMembers}</span></div>`
                 : '<span style="color:var(--muted)">names not yet filled in</span>'}</td>
-          <td class="hide-sm">${esc(e.advisor)}</td>
+          <td class="hide-sm">${esc(teacherLabel(e.teacher))}</td>
           <td>${statusPill(e.status)}</td>
           <td>${resultCell(e)}</td>
           <td style="text-align:right;white-space:nowrap">
@@ -562,7 +744,8 @@ function compDetail(){
         </tr>
         ${state.expanded === e.id ? `<tr class="expand"><td colspan="6">
             <b>Students:</b> ${e.members.length ? e.members.map(m=>`${esc(student(m).name)}${student(m).cls?` <small>(${esc(student(m).cls)})</small>`:''}`).join(' &nbsp;·&nbsp; ') : '—'}
-            <br><b>Teacher advisor:</b> ${esc(e.advisor)}${e.award ? `<br><b>Award:</b> ${esc(e.award)}` : ''}</td></tr>` : ''}
+            <br><b>Teacher:</b> ${esc(teacherLabel(e.teacher))}${e.award ? `<br><b>Award:</b> ${esc(e.award)}` : ''}${
+             e.idea ? `<br><b>Project idea:</b> ${esc(e.idea)}` : ''}</td></tr>` : ''}
       `).join('') || '<tr><td colspan="6" class="empty">No teams recorded yet — click <b>Add team</b> to start.</td></tr>'}
       </tbody>
     </table>
@@ -615,6 +798,131 @@ function studentList(){
     </table>
   </div>
   <button class="btn primary fab" onclick="openStudent()">${plusIcon()} Student</button>`;
+}
+
+/* ============================ WALL OF FAME ============================ */
+const LOGO = () => { const el = document.querySelector('.brand .logo'); return el ? el.src : ''; };
+let photos = {};            /* year -> {src, cap} */
+
+function pickPhoto(y){
+  const inp = document.createElement('input');
+  inp.type = 'file'; inp.accept = 'image/*';
+  inp.onchange = () => {
+    const f = inp.files[0]; if(!f) return;
+    const r = new FileReader();
+    r.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        const max = 1500, sc = Math.min(1, max / img.width);
+        const cv = document.createElement('canvas');
+        cv.width = Math.round(img.width * sc); cv.height = Math.round(img.height * sc);
+        cv.getContext('2d').drawImage(img, 0, 0, cv.width, cv.height);
+        photos[y] = {src: cv.toDataURL('image/jpeg', 0.82), cap: (photos[y]||{}).cap || ''};
+        render();
+      };
+      img.onerror = () => alert('That file could not be read as an image.');
+      img.src = r.result;
+    };
+    r.readAsDataURL(f);
+  };
+  inp.click();
+}
+function removePhoto(y){ if(confirm(`Remove the ${y} photo?`)){ delete photos[y]; render(); } }
+function captionPhoto(y){
+  const c = prompt(`Caption for the ${y} photo:`, (photos[y]||{}).cap || '');
+  if(c !== null){ photos[y].cap = c.trim(); render(); }
+}
+function photoBand(y){
+  const ph = photos[y];
+  if(!ph) return `<div class="dropzone noprint" onclick="pickPhoto(${y})">
+      <div class="big">＋</div>
+      <div style="margin-top:6px;font-weight:600">Add a photo for ${y}</div>
+      <div style="font-size:12px;margin-top:2px">Club photo, prize-giving, or the winning team</div></div>`;
+  return `<div class="photoband">
+      <img src="${ph.src}" alt="STEM Club ${y}">
+      <div class="tools noprint">
+        <button onclick="pickPhoto(${y})">Replace</button>
+        <button onclick="captionPhoto(${y})">Caption</button>
+        <button onclick="removePhoto(${y})">Remove</button>
+      </div>
+      <div class="cap2"><span>${ph.cap ? esc(ph.cap) : `<i>STEM Club SMK Lutong · ${y}</i>`}</span>
+        <span class="noprint" style="opacity:.7">${y}</span></div>
+    </div>`;
+}
+
+function wall(){
+  const all = state.wallAll;
+  const cs = all ? competitions.slice() : yearComps();
+  const t = tally(cs);
+
+  const wins = [];
+  cs.forEach(c => entriesOf(c.id).forEach(e => {
+    const m = medalOf(e.result);
+    if(m || e.award || (e.result !== '—' && e.result !== 'Participation')) wins.push({c, e, m});
+  }));
+  const rank = {gold:0, silver:1, bronze:2};
+  wins.sort((a,b) => (rank[a.m] ?? 3) - (rank[b.m] ?? 3) || (b.c.date||'').localeCompare(a.c.date||''));
+
+  const scope = all ? 'All years' : state.year;
+  const winsOf = y => { const w = [];
+    compsOf(y).forEach(c => entriesOf(c.id).forEach(e => { const m = medalOf(e.result);
+      if(m || e.award || (e.result !== '—' && e.result !== 'Participation')) w.push({c, e, m}); }));
+    return w.sort((a,b) => ({gold:0,silver:1,bronze:2}[a.m] ?? 3) - ({gold:0,silver:1,bronze:2}[b.m] ?? 3));
+  };
+  const card = ({c,e,m}) => `<div class="fcard ${m || 'special'}">
+      <div class="res">${{gold:'🥇',silver:'🥈',bronze:'🥉'}[m] || '⭐'} ${esc(e.result === '—' ? (e.award || 'Special award') : e.result)}</div>
+      <div class="names">${e.members.length
+          ? e.members.map(id => `<b>${esc(student(id).name)}</b>${student(id).cls ? ` <span style="color:var(--muted)">${esc(student(id).cls)}</span>` : ''}`).join('<br>')
+          : `<span style="color:var(--muted)">${esc(e.name)} — names not recorded</span>`}</div>
+      ${e.award && e.result !== '—' ? `<div style="margin-top:6px"><span class="award">${esc(e.award)}</span></div>` : ''}
+      <div class="ev">${typeOf(c.type).icon} ${esc(c.name)} · ${c.level}${all ? ' · ' + c.year : ''}</div>
+    </div>`;
+
+  const section = (key, title) => {
+    const g = wins.filter(w => (key === 'special' ? !w.m : w.m === key));
+    return g.length ? `<h2>${title} <span style="color:var(--muted);font-weight:500">· ${g.length}</span></h2>
+      <div class="fame">${g.map(card).join('')}</div>` : '';
+  };
+
+  return `
+  <div class="hero">
+    ${LOGO() ? `<img src="${LOGO()}" alt="">` : ''}
+    <div>
+      <h1>Wall of Fame</h1>
+      <p>STEM Club SMK Lutong · ${scope}</p>
+    </div>
+    <div class="tally">
+      <div><span>${t.gold}</span><small>Gold</small></div>
+      <div><span>${t.silver}</span><small>Silver</small></div>
+      <div><span>${t.bronze}</span><small>Bronze</small></div>
+      <div><span>${wins.filter(w => !w.m).length}</span><small>Special</small></div>
+    </div>
+  </div>
+
+  <div class="row noprint" style="margin:16px 0 4px">
+    <button class="chip ${!all?'on':''}" onclick="state.wallAll=false;render()">${state.year} only</button>
+    <button class="chip ${all?'on':''}" onclick="state.wallAll=true;render()">All years</button>
+    <button class="btn sm" style="margin-left:auto" onclick="window.print()">🖨 Print for notice board</button>
+  </div>
+
+  ${all ? years.slice().sort((a,b) => b - a).map(y => { const w = winsOf(y), tt = tally(compsOf(y));
+      return `<div class="yearhead"><h2>${y}</h2>
+        <span class="t">🥇 ${tt.gold} · 🥈 ${tt.silver} · 🥉 ${tt.bronze} · ${compsOf(y).length} competitions</span></div>
+      ${photoBand(y)}
+      ${w.length ? `<div class="fame" style="margin-top:12px">${w.map(card).join('')}</div>`
+                 : '<div class="card empty">No achievements recorded for ' + y + ' yet.</div>'}`;}).join('')
+    + `<div class="row noprint" style="margin-top:26px">
+         <button class="btn" onclick="newSession()">${plusIcon()} Add a year</button>
+       </div>`
+   : `
+  ${photoBand(state.year)}
+
+  ${section('gold','🥇 Gold')}
+  ${section('silver','🥈 Silver')}
+  ${section('bronze','🥉 Bronze')}
+  ${section('special','⭐ Special awards &amp; finalists')}
+  ${wins.length ? '' : '<div class="card empty" style="margin-top:20px">No achievements recorded for this year yet.</div>'}
+  `}`;
 }
 
 /* ============================ 5. REPORTS ============================ */
@@ -710,7 +1018,7 @@ function openGroup(compId, entryId){
   const e = entries.find(x => x.id === entryId);
   const n = allEntriesOf(compId).length + 1;
   draft = e ? {...e, members:[...e.members]}
-            : {id:null, comp:compId, name:'Team ' + n, members:[], advisor:'—', status:'Confirmed', result:'—', award:''};
+            : {id:null, comp:compId, name:'Team ' + n, members:[], teacher:compTeacher(compId), status:'Confirmed', result:'—', award:'', idea:''};
   memberQuery = ''; drawPanel(); openScrim(); $('panel').classList.add('on');
 }
 function drawPanel(){
@@ -742,8 +1050,12 @@ function drawPanel(){
      </div>
 
      <div class="grid2">
-       <div class="field"><label>Teacher advisor</label>
-         <select onchange="draft.advisor=this.value">${ADVISORS.map(a=>`<option ${draft.advisor===a?'selected':''}>${a}</option>`).join('')}</select></div>
+       <div class="field"><label>Teacher in charge
+           <button class="btn sm" style="float:right;padding:1px 8px" onclick="addTeacherInline('panel')">${plusIcon()}New</button></label>
+         <select onchange="draft.teacher=this.value?+this.value:null">
+           <option value="">— none —</option>
+           ${teachers.map(t=>`<option value="${t.id}" ${draft.teacher===t.id?'selected':''}>${esc(t.name)}</option>`).join('')}
+         </select></div>
        <div class="field"><label>Status</label>
          <select onchange="draft.status=this.value">${['Draft','Confirmed','Completed','Withdrawn'].map(s=>`<option ${draft.status===s?'selected':''}>${s}</option>`).join('')}</select></div>
      </div>
@@ -751,6 +1063,8 @@ function drawPanel(){
        <select onchange="draft.result=this.value">${RESULTS.map(r=>`<option ${draft.result===r?'selected':''}>${r}</option>`).join('')}</select></div>
      <div class="field"><label>Special award <span style="font-weight:400;color:var(--muted)">— optional</span></label>
        <input value="${esc(draft.award)}" oninput="draft.award=this.value" placeholder="e.g. Best Presenter"></div>
+     <div class="field"><label>Project idea <span style="font-weight:400;color:var(--muted)">— optional</span></label>
+       <input value="${esc(draft.idea||'')}" oninput="draft.idea=this.value" placeholder="What is the team building?"></div>
    </div>
    <footer>
      <button class="btn" onclick="closeAll()">Cancel</button>
@@ -771,7 +1085,7 @@ function saveGroup(again){
   const c = competitions.find(x => x.id === draft.comp);
   if(entriesOf(c.id).length > (c.teams||0)) c.teams = entriesOf(c.id).length;
   if(again){ draft = {id:null, comp:draft.comp, name:'Team ' + (allEntriesOf(draft.comp).length+1),
-                      members:[], advisor:draft.advisor, status:draft.status, result:'—', award:''};
+                      members:[], teacher:draft.teacher, status:draft.status, result:'—', award:''};
              memberQuery=''; drawPanel(); render(); focusEl('gname'); }
   else { closeAll(); render(); }
 }
@@ -781,7 +1095,7 @@ function delGroup(id){ if(confirm('Remove this team?')){ entries = entries.filte
 function openComp(id){
   const c = competitions.find(x => x.id === id);
   draft = c ? {...c} : {id:null, year:state.year, name:'', date:'', dateText:'', level:'District',
-                        type:types[0].id, teams:1, maxMembers:4, venue:'', organiser:'', status:'Draft'};
+                        type:types[0].id, teams:1, maxMembers:4, venue:'', organiser:'', status:'Draft', teacher:null};
   drawCompModal(); openScrim(); $('modal').classList.add('on');
 }
 function drawCompModal(){
@@ -818,6 +1132,13 @@ function drawCompModal(){
         <div class="field"><label>Venue</label><input value="${esc(draft.venue)}" oninput="draft.venue=this.value"></div>
         <div class="field"><label>Organiser</label><input value="${esc(draft.organiser)}" oninput="draft.organiser=this.value"></div>
       </div>
+      <div class="field"><label>Teacher in charge
+          <button class="btn sm" style="float:right;padding:1px 8px" onclick="addTeacherInline('comp')">${plusIcon()}New teacher</button></label>
+        <select onchange="draft.teacher=this.value?+this.value:null">
+          <option value="">— not assigned —</option>
+          ${teachers.map(t=>`<option value="${t.id}" ${draft.teacher===t.id?'selected':''}>${esc(t.name)}</option>`).join('')}
+        </select>
+        <div class="cap">New teams in this competition start with this teacher.</div></div>
     </div>
     <footer><button class="btn" onclick="closeAll()">Cancel</button>
       <button class="btn primary" onclick="saveComp()">Save</button></footer>`;
@@ -834,10 +1155,134 @@ function saveComp(){
   else { const id = nextId.comp++; competitions.push({...draft, id}); state.compId = id; state.view='competition'; }
   closeAll(); render();
 }
+function delComp(id){
+  const c = competitions.find(x => x.id === id);
+  const n = allEntriesOf(c.id).length;
+  if(!confirm(`Delete "${c.name}" (${c.year})?` +
+      (n ? `\n\nThis also removes the ${n} team${n===1?'':'s'} recorded under it.` : '') +
+      `\n\nThis cannot be undone.`)) return;
+  competitions = competitions.filter(x => x.id !== id);
+  entries = entries.filter(e => e.comp !== id);
+  if(state.compId === id){ closeAll(); go('competitions'); }
+  else { render(); if($('panel').classList.contains('on')) drawDupes(); }
+}
 function duplicateComp(id){
   const c = competitions.find(x => x.id === id);
   const copy = {...c, id: nextId.comp++, status:'Draft', teams:0, dateText:''};
   competitions.push(copy); go('competition', copy.id);
+}
+
+/* --- custom ordering of the competition list --- */
+function ensureOrd(y){
+  const cs = compsOf(y);
+  if(cs.some(c => typeof c.ord !== 'number')){
+    cs.slice().sort((a,b) => (b.date||'0').localeCompare(a.date||'0'))
+      .forEach((c,i) => c.ord = i);
+  }
+}
+function setSort(s){ if(s === 'custom') ensureOrd(state.year); state.sort = s; render(); }
+function resetOrder(){
+  compsOf(state.year).forEach(c => delete c.ord);
+  state.sort = 'date'; render();
+}
+function orderedComps(y){ ensureOrd(y); return compsOf(y).slice().sort((a,b) => a.ord - b.ord); }
+function moveComp(id, dir){
+  const list = orderedComps(state.year);
+  const i = list.findIndex(c => c.id === id), j = i + dir;
+  if(j < 0 || j >= list.length) return;
+  [list[i], list[j]] = [list[j], list[i]];
+  list.forEach((c,k) => c.ord = k);
+  render();
+}
+function dragStart(ev, id){
+  dragId = id; ev.dataTransfer.effectAllowed = 'move';
+  try{ ev.dataTransfer.setData('text/plain', String(id)); }catch(e){}
+  ev.currentTarget.classList.add('dragging');
+}
+function dragOver(ev){
+  if(dragId === null) return;
+  ev.preventDefault(); ev.dataTransfer.dropEffect = 'move';
+  const r = ev.currentTarget.getBoundingClientRect();
+  const top = (ev.clientY - r.top) < r.height/2;
+  ev.currentTarget.classList.toggle('over-top', top);
+  ev.currentTarget.classList.toggle('over-bot', !top);
+}
+function dragLeave(ev){ ev.currentTarget.classList.remove('over-top','over-bot'); }
+function dragEnd(ev){
+  dragId = null;
+  document.querySelectorAll('.item').forEach(el => el.classList.remove('dragging','over-top','over-bot'));
+}
+function dropComp(ev, targetId){
+  ev.preventDefault();
+  const r = ev.currentTarget.getBoundingClientRect();
+  const before = (ev.clientY - r.top) < r.height/2;
+  ev.currentTarget.classList.remove('over-top','over-bot');
+  if(dragId === null || dragId === targetId){ dragEnd(ev); return; }
+  const list = orderedComps(state.year);
+  const from = list.findIndex(c => c.id === dragId);
+  const [moved] = list.splice(from, 1);
+  let to = list.findIndex(c => c.id === targetId);
+  if(!before) to++;
+  list.splice(to, 0, moved);
+  list.forEach((c,k) => c.ord = k);
+  dragId = null; render();
+}
+
+/* --- teachers --- */
+const compTeacher = cid => (competitions.find(c => c.id === cid) || {}).teacher || null;
+function addTeacherInline(where){
+  const n = prompt('Teacher name (e.g. Pn. Siti binti Ahmad):');
+  if(!n || !n.trim()) return;
+  const t = {id: nextId.teacher++, name: n.trim()};
+  teachers.push(t); draft.teacher = t.id;
+  if(where === 'comp') drawCompModal(); else drawPanel();
+}
+function addTeacher(){
+  const n = prompt('Teacher name (e.g. Pn. Siti binti Ahmad):');
+  if(!n || !n.trim()) return;
+  teachers.push({id: nextId.teacher++, name: n.trim()}); render();
+}
+function renameTeacher(id){
+  const t = teachers.find(x => x.id === id);
+  const n = prompt('Rename teacher:', t.name);
+  if(n && n.trim()){ t.name = n.trim(); render(); }
+}
+function delTeacher(id){
+  const used = entries.filter(e => e.teacher === id).length +
+               competitions.filter(c => c.teacher === id).length;
+  if(!confirm(used ? `This teacher is linked to ${used} record(s). Remove them and clear those links?`
+                   : 'Remove this teacher?')) return;
+  entries.forEach(e => { if(e.teacher === id) e.teacher = null; });
+  competitions.forEach(c => { if(c.teacher === id) c.teacher = null; });
+  teachers = teachers.filter(t => t.id !== id);
+  render();
+}
+
+/* --- duplicate clean-up panel --- */
+function openDupes(){ drawDupes(); openScrim(); $('panel').classList.add('on'); }
+function drawDupes(){
+  const dups = dupGroups(state.year);
+  $('panel').innerHTML = `
+    <header>Duplicate competitions<button class="x" onclick="closeAll()">✕</button></header>
+    <div class="body">
+      ${dups.length ? `<p class="sub">Same name entered more than once in ${state.year}.
+        Keep the one with the fullest record and delete the rest — deleting also removes that copy's teams.</p>` : ''}
+      ${dups.map(g => `
+        <div class="card" style="margin-bottom:14px">
+          <div class="pad" style="border-bottom:1px solid var(--line)"><b>${esc(g[0].name)}</b>
+            <div class="cap">${g.length} copies</div></div>
+          ${g.map(c => `<div class="item" style="cursor:default">
+            <div><div class="title">${esc(showDate(c))} · ${c.level}</div>
+              <div class="meta">${typeOf(c.type).icon} ${esc(typeOf(c.type).name)} ·
+                ${teamCount(c)} teams, ${entriesOf(c.id).length} named ${statusPill(c.status)}</div></div>
+            <div class="row">
+              <button class="btn sm" onclick="closeAll();go('competition',${c.id})">Open</button>
+              <button class="btn sm danger" onclick="delComp(${c.id})">✕ Delete</button></div>
+          </div>`).join('')}
+        </div>`).join('')
+        || '<div class="empty">No duplicate names in ' + state.year + ' — everything looks clean.</div>'}
+    </div>
+    <footer><button class="btn" onclick="closeAll()">Done</button></footer>`;
 }
 
 /* --- students --- */
@@ -1051,6 +1496,22 @@ function settings(){
     achievements follow them all the way from Form 1 to Form 5.</div>
 
   <div class="spread" style="margin-top:26px">
+    <h2 style="margin-bottom:0">Teachers</h2>
+    <button class="btn sm" onclick="addTeacher()">${plusIcon()}Add teacher</button>
+  </div>
+  <div class="card list" style="margin-top:10px">
+    ${teachers.map(t => { const teams = entries.filter(e => e.teacher === t.id).length;
+      const comps = competitions.filter(c => c.teacher === t.id).length;
+      return `<div class="item" style="cursor:default">
+        <div><div class="title">${esc(t.name)}</div>
+          <div class="meta">${comps} competition${comps===1?'':'s'} · ${teams} team${teams===1?'':'s'}</div></div>
+        <div class="row">
+          <button class="btn sm" onclick="renameTeacher(${t.id})">✎</button>
+          <button class="btn sm danger" onclick="delTeacher(${t.id})">✕</button></div></div>`;}).join('')
+      || '<div class="empty">No teachers yet — add the club advisors so you can assign them to competitions and teams.</div>'}
+  </div>
+
+  <div class="spread" style="margin-top:26px">
     <h2 style="margin-bottom:0">Competition types</h2>
     <button class="btn sm" onclick="addType()">${plusIcon()}New type</button>
   </div>
@@ -1064,6 +1525,12 @@ function settings(){
           <button class="btn sm" onclick="renameType(${t.id})">✎</button>
           <button class="btn sm" onclick="changeIcon(${t.id})">😀</button>
           <button class="btn sm danger" onclick="delType(${t.id})">✕</button></div></div>`;}).join('')}
+  </div>
+
+  <h2>Tidy up</h2>
+  <div class="card pad">
+    <div class="row"><button class="btn" onclick="openDupes()">⧉ Find duplicate competitions in ${state.year}</button></div>
+    <div class="cap">Checks the current club year for the same competition name entered twice.</div>
   </div>
 
   <h2>Data</h2>
@@ -1097,15 +1564,16 @@ function exportAchievements(year){
              .sort((a,b) => a.year - b.year || (a.date||'').localeCompare(b.date||''));
 
   /* Sheet 1 — one row per student per achievement */
-  const s1 = [['Bil.','Tahun','Pertandingan','Jenis','Peringkat','Tarikh','Kumpulan',
-               'Nama Pelajar','Kelas','Pencapaian','Pingat','Anugerah Khas']];
+  const s1 = [['Bil.','Tahun','Pertandingan','Jenis','Peringkat','Tarikh','Guru Pengiring','Kumpulan',
+               'Nama Pelajar','Kelas','Pencapaian','Pingat','Anugerah Khas','Idea Projek']];
   let n = 0;
   cs.forEach(c => allEntriesOf(c.id).forEach(e => {
     if(!isPodium(e.result) && !e.award) return;
     const m = medalOf(e.result);
     const medal = m ? {gold:'Emas',silver:'Perak',bronze:'Gangsa'}[m] : '';
-    const base = [c.year, c.name, typeOf(c.type).name, c.level, showDate(c), e.name];
-    const tail = [e.result === '—' ? '' : e.result, medal, e.award || ''];
+    const base = [c.year, c.name, typeOf(c.type).name, c.level, showDate(c),
+                  teacherLabel(e.teacher || c.teacher), e.name];
+    const tail = [e.result === '—' ? '' : e.result, medal, e.award || '', e.idea || ''];
     if(e.members.length) e.members.forEach(id =>
         s1.push([++n, ...base, student(id).name, student(id).cls, ...tail]));
     else s1.push([++n, ...base, '(nama belum direkod)', '', ...tail]);
@@ -1121,6 +1589,20 @@ function exportAchievements(year){
   s2.push(['Peringkat','Emas','Perak','Gangsa','Lain-lain','Jumlah']);
   LEVELS.forEach(l => { const tt = tally(cs.filter(c => c.level === l));
     if(tt.medals || tt.other) s2.push([l, tt.gold, tt.silver, tt.bronze, tt.other, tt.medals + tt.other]); });
+  if(teachers.length){
+    s2.push([]);
+    s2.push(['Guru Pengiring','Emas','Perak','Gangsa','Lain-lain','Jumlah']);
+    teachers.forEach(t => {
+      let g=0,si=0,b=0,o=0;
+      cs.forEach(c => entriesOf(c.id).forEach(e => {
+        if((e.teacher || c.teacher) !== t.id) return;
+        const m = medalOf(e.result);
+        if(m==='gold') g++; else if(m==='silver') si++; else if(m==='bronze') b++;
+        else if(e.result !== '—' || e.award) o++;
+      }));
+      if(g+si+b+o) s2.push([t.name, g, si, b, o, g+si+b+o]);
+    });
+  }
 
   /* Sheet 3 — per student */
   const s3 = [['Nama Pelajar','Kelas','Emas','Perak','Gangsa','Jumlah Pingat','Penyertaan']];
@@ -1142,7 +1624,7 @@ function exportAchievements(year){
     ws['!cols'] = widths.map(w => ({wch:w}));
     XLSX.utils.book_append_sheet(wb, ws, name);
   };
-  mk(s1, [5,7,38,14,13,18,20,30,14,24,8,26], 'Pencapaian');
+  mk(s1, [5,7,38,14,13,18,22,20,30,14,24,8,26,40], 'Pencapaian');
   mk(s2, [22,8,8,8,11,9], 'Ringkasan');
   mk(s3, [30,14,8,8,8,13,12], 'Mengikut Pelajar');
   XLSX.writeFile(wb, `Pencapaian STEM SMK Lutong ${year || 'semua tahun'}.xlsx`);
@@ -1152,13 +1634,15 @@ function exportAchievements(year){
 function exportCsv(year){
   const cs = year ? compsOf(year) : competitions.slice();
   const rows = [['Session','Bil.','Pertandingan','Type','Tarikh','Level','Penyertaan (teams)',
-                 'Team','Members','Advisor','Status','Pencapaian','Award']];
+                 'Team','Members','Guru','Status','Pencapaian','Award','Idea']];
   cs.sort((a,b) => a.year - b.year || (a.date||'').localeCompare(b.date||''));
   cs.forEach((c,i) => {
     const es = allEntriesOf(c.id);
-    if(!es.length) rows.push([c.year, i+1, c.name, typeOf(c.type).name, showDate(c), c.level, teamCount(c), '', '', '', c.status, '', '']);
+    if(!es.length) rows.push([c.year, i+1, c.name, typeOf(c.type).name, showDate(c), c.level, teamCount(c),
+        '', '', teacherLabel(c.teacher), c.status, '', '', '']);
     es.forEach(e => rows.push([c.year, i+1, c.name, typeOf(c.type).name, showDate(c), c.level, teamCount(c),
-        e.name, e.members.map(m => student(m).name).join('; '), e.advisor, e.status, e.result, e.award]));
+        e.name, e.members.map(m => student(m).name).join('; '),
+        teacherLabel(e.teacher || c.teacher), e.status, e.result, e.award, e.idea || '']));
   });
   const csv = '﻿' + rows.map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
   const a = document.createElement('a');
