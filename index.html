@@ -570,9 +570,9 @@ const openToJoin = y => compsOf(y)
 function closingBadge(c){
   if(!c.deadline) return '<span class="pill p-open">Open — ask your teacher</span>';
   const d = daysLeft(c.deadline);
-  if(d < 0)  return '<span class="pill p-out">Closed</span>';
+  if(d < 0)   return '<span class="pill p-out">Closed</span>';
   if(d === 0) return '<span class="pill p-out">Closes today</span>';
-  if(d <= 7) return `<span class="pill p-closed">Closes in ${d} day${d===1?'':'s'}</span>`;
+  if(d <= 7)  return `<span class="pill p-closed">Closes in ${d} day${d===1?'':'s'}</span>`;
   return `<span class="pill p-done">Closes in ${d} days</span>`;
 }
 const normName = s => String(s).toLowerCase().replace(/[^a-z0-9]/g,'');
@@ -952,8 +952,10 @@ let db = null, me = null, canEdit = false, applying = false, saveTimer = null;
 const cloudOn = () => !String(FIREBASE.apiKey).startsWith('PASTE');
 
 /* --- what gets stored --- */
-const packData = () => ({years, types, teachers, students, competitions, entries, nextId,
-                         updatedAt: Date.now(), updatedBy: me ? me.email : ''});
+/* core = the bits worth comparing; updatedAt/By change every call so they stay out of it */
+const packCore = () => ({years, types, teachers, students, competitions, entries, nextId});
+const packData = () => ({...packCore(), updatedAt: Date.now(), updatedBy: me ? me.email : ''});
+let lastSaved = null;
 function unpackData(d){
   applying = true;
   if(Array.isArray(d.years))        years        = d.years;
@@ -974,15 +976,17 @@ function chip(msg, ms){
 }
 function scheduleSave(){
   if(!db || !canEdit || applying) return;
+  if(JSON.stringify(packCore()) === lastSaved) return;    /* nothing actually changed */
   clearTimeout(saveTimer);
   chip('Saving…');
-  saveTimer = setTimeout(saveNow, 700);
+  saveTimer = setTimeout(saveNow, 800);
 }
 function saveNow(){
   if(!db || !canEdit) return;
+  lastSaved = JSON.stringify(packCore());                 /* remember before writing */
   db.collection('club').doc('data').set(packData())
     .then(() => chip('All changes saved', 1800))
-    .catch(e => chip('Not saved: ' + e.code, 6000));
+    .catch(e => { lastSaved = null; chip('Not saved: ' + e.code, 6000); });
 }
 function savePhoto(y){
   if(!db || !canEdit) return;
@@ -1029,7 +1033,11 @@ function bootCloud(){
 
 function listen(){
   db.collection('club').doc('data').onSnapshot(snap => {
-    if(snap.exists){ unpackData(snap.data()); render(); }
+    if(snap.exists){
+      unpackData(snap.data());
+      lastSaved = JSON.stringify(packCore());   /* in step with the server — do not write it back */
+      render();
+    }
     else if(canEdit){ chip('Setting up your club data…'); saveNow(); }
   }, e => chip('Cannot read data: ' + e.code, 8000));
 
@@ -1392,7 +1400,7 @@ function drawCompModal(){
       <div class="grid2">
         <div class="field"><label>Closing date for entries</label>
           <input type="date" value="${draft.deadline || ''}" oninput="draft.deadline=this.value">
-          <div class="cap">Shown to students on the dashboard while status is <b>Open</b>.</div></div>
+          <div class="cap">Shown to students while status is <b>Open</b>.</div></div>
         <div class="field"><label>How to join <span style="font-weight:400;color:var(--muted)">— optional</span></label>
           <input value="${esc(draft.howJoin || '')}" oninput="draft.howJoin=this.value"
                  placeholder="e.g. See Pn. Kaur, STEM room"></div>
@@ -1436,9 +1444,8 @@ function saveComp(){
 }
 function toggleOpen(id){
   const c = competitions.find(x => x.id === id);
-  if(c.status === 'Open'){
-    c.status = 'Closed';
-  } else {
+  if(c.status === 'Open'){ c.status = 'Closed'; }
+  else {
     c.status = 'Open';
     if(!c.deadline){
       const d = prompt('Last date students can enter? (YYYY-MM-DD)\n\nLeave blank if there is no fixed closing date.', '');
