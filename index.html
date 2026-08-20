@@ -188,7 +188,7 @@
   .info{background:var(--accent-soft);color:var(--accent);border:1px solid #c7d7fe;padding:10px 13px;
         border-radius:9px;font-size:12.5px;display:block;margin-bottom:16px}
 
-  /* ---------- wall of fame ---------- */
+  /* ---------- hall of fame ---------- */
   .hero{color:#fff;border-radius:16px;padding:28px 30px;display:flex;align-items:center;gap:24px;flex-wrap:wrap;
         background-image:linear-gradient(135deg,#0b1222 0%,#1d4ed8 58%,#38bdf8 140%),
           repeating-linear-gradient(90deg,rgba(255,255,255,.06) 0 1px,transparent 1px 40px),
@@ -369,7 +369,7 @@ let types = [
 ];
 const ICON_CHOICES = ['🤖','💻','🔬','📐','💡','⚙️','🎪','🌏','🔭','🧪','🚀','🌱','🎯','🏆'];
 
-let years = [2026];
+let years = [2018,2019,2020,2021,2022,2023,2024,2025,2026];
 
 /* Club namelist — carries across every session */
 let students = [
@@ -440,7 +440,52 @@ let students = [
   {id:65,name:"Ella",cls:"1 Einstein"},
   {id:66,name:"Chieng Shao Yuen",cls:"1 Newton"},
   {id:67,name:"Jayden",cls:"1 Avicenna"},
-  {id:68,name:"Alvis Chan",cls:"1 Newton"}
+  {id:68,name:"Alvis Chan",cls:"1 Newton"},
+
+  /* ---- added from Hall_of_Fame_Achievements_2018-2026.docx (historical roster, 2018–2025) ---- */
+  {id:69,name:"Liew Jia Wen",cls:""},
+  {id:70,name:"Debby Hue",cls:""},
+  {id:71,name:"Tan Wei Shuen",cls:""},
+  {id:72,name:"Esther",cls:""},
+  {id:73,name:"Anisha",cls:""},
+  {id:74,name:"Daphnie",cls:""},
+  {id:75,name:"Benedict",cls:"2 Avicenna"},
+  {id:76,name:"Ethan",cls:"2 Einstein"},
+  {id:77,name:"Huang Qi He",cls:"2 Hawking"},
+  {id:78,name:"Lee Tone",cls:"3 Einstein"},
+  {id:79,name:"Amira",cls:"3 Einstein"},
+  {id:80,name:"Sarvintirran",cls:"3 Einstein"},
+  {id:81,name:"Rudy Chang",cls:"3 Einstein"},
+  {id:82,name:"Danish Miqail",cls:"3 Einstein"},
+  {id:83,name:"Pravee",cls:"4 Einstein"},
+  {id:84,name:"Emmanuel",cls:"4 Avicenna"},
+  {id:85,name:"Johannas",cls:"4 Avicenna"},
+  {id:86,name:"Liew Zhi Yee",cls:"3 Einstein"},
+  {id:87,name:"Emely Thang",cls:"3 Einstein"},
+  {id:88,name:"Janice Lau Koh Xin",cls:"3 Einstein"},
+  {id:89,name:"Dominic",cls:"2 Einstein"},
+  {id:90,name:"Loon Kai Jing",cls:"2 Avicenna"},
+  {id:91,name:"Alvin Su",cls:"2 Avicenna"},
+  {id:92,name:"Dayangku Zufayra",cls:""},
+  {id:93,name:"Cathelayna",cls:"4 Einstein"},
+  {id:94,name:"Andrea",cls:"3 Einstein"},
+  {id:95,name:"Nirelly Efua",cls:"3 Einstein"},
+  {id:96,name:"Violet Sim",cls:"3 Einstein"},
+  {id:97,name:"Ryan Foh",cls:"5 Einstein"},
+  {id:98,name:"Badzlin",cls:""},
+  {id:99,name:"Ryan Ng",cls:""},
+  {id:100,name:"Daenny",cls:""},
+  {id:101,name:"Evelina",cls:""},
+  {id:102,name:"Lucas Chew",cls:""},
+  {id:103,name:"Arielle Sim",cls:""},
+  {id:104,name:"Carlos Chiong",cls:""},
+  {id:105,name:"Ivan Lau",cls:""},
+  {id:106,name:"Claire Lau",cls:""},
+  {id:107,name:"Lai Hui Zhen",cls:""},
+  {id:108,name:"Tone Lau",cls:""},
+  {id:109,name:"Meghan Wee",cls:""},
+  {id:110,name:"Olivia Goh",cls:""},
+  {id:111,name:"Aidil Dzakwan bin Ahmad",cls:""}
 ];
 
 /* 2026 record, as supplied. teams = number of teams entered;
@@ -486,6 +531,74 @@ let competitions = [
   {id:19,year:2026, name:'Arduino Project 2026', date:'', dateText:'Sepanjang tahun 2026',
    level:'School', type:9, teams:23, maxMembers:3, venue:'SMK Lutong', organiser:'STEM Club',
    status:'Ongoing', teacher:null},
+
+  /* ---- added from Hall_of_Fame_Achievements_2018-2026.docx ---- */
+  {id:20,year:2018, name:'Shell NXplorers Malaysia — National Champion 2018', date:'', dateText:'2018',
+   level:'National', type:5, teams:1, maxMembers:4, venue:'', organiser:'Shell', status:'Completed'},
+  {id:21,year:2019, name:'YIC Chumbaka — "BEEP" Traffic Management', date:'', dateText:'2019',
+   level:'National', type:5, teams:1, maxMembers:4, venue:'', organiser:'YIC Chumbaka', status:'Completed'},
+  {id:22,year:2020, name:'Shell NXplorers — "Chillax" (Rainy-Day Refreshment Station / Reimagine Rainwater as a Tool for Education)',
+   date:'', dateText:'2020', level:'National', type:5, teams:1, maxMembers:4, venue:'', organiser:'Shell', status:'Completed'},
+  {id:23,year:2020, name:'Food Management — Kementerian Pendidikan Malaysia (KPM)', date:'', dateText:'2020',
+   level:'National', type:5, teams:1, maxMembers:4, venue:'', organiser:'KPM', status:'Completed'},
+  {id:24,year:2020, name:'Shell "Make the Future" Festival of Bright Energy — Sponsored Study Trip',
+   date:'', dateText:'2020', level:'International', type:8, teams:1, maxMembers:6, venue:'London', organiser:'Shell', status:'Completed'},
+  {id:25,year:2021, name:'YIC Chumbaka — FOODIMER', date:'', dateText:'2021',
+   level:'National', type:5, teams:1, maxMembers:4, venue:'', organiser:'YIC Chumbaka', status:'Completed'},
+  {id:26,year:2021, name:'YIC — Smart Garden', date:'', dateText:'2021',
+   level:'National', type:5, teams:1, maxMembers:4, venue:'', organiser:'YIC', status:'Completed'},
+  {id:27,year:2021, name:'YIC — Water Purifier', date:'', dateText:'2021',
+   level:'National', type:5, teams:1, maxMembers:4, venue:'', organiser:'YIC', status:'Completed'},
+  {id:28,year:2021, name:'YIC — Flood Sensor', date:'', dateText:'2021',
+   level:'National', type:5, teams:1, maxMembers:4, venue:'', organiser:'YIC', status:'Completed'},
+  {id:29,year:2021, name:'YIC — Gas Sensor', date:'', dateText:'2021',
+   level:'National', type:5, teams:1, maxMembers:4, venue:'', organiser:'YIC', status:'Completed'},
+  {id:30,year:2021, name:'Shell NXplorers Sarawak Finals — Battery Buddy Sensor', date:'', dateText:'2021',
+   level:'State', type:5, teams:1, maxMembers:4, venue:'', organiser:'Shell', status:'Completed'},
+  {id:31,year:2021, name:'Kementerian Pendidikan Malaysia (KPM) Competition', date:'', dateText:'2021',
+   level:'National', type:5, teams:1, maxMembers:4, venue:'', organiser:'KPM', status:'Completed'},
+  {id:32,year:2022, name:'YIC 2022 — Flood Sensor', date:'', dateText:'2022',
+   level:'National', type:5, teams:1, maxMembers:4, venue:'', organiser:'YIC', status:'Completed'},
+  {id:33,year:2022, name:'YIC 2022 — Eco Enzyme', date:'', dateText:'2022',
+   level:'National', type:5, teams:1, maxMembers:4, venue:'', organiser:'YIC', status:'Completed'},
+  {id:34,year:2022, name:'Young STEMist Innovation & Invention Conference — Karnival STEM Peringkat Kebangsaan ke-6 (Kategori Sains Sosial)',
+   date:'', dateText:'2022', level:'National', type:3, teams:1, maxMembers:4, venue:'', organiser:'KPM', status:'Completed'},
+  {id:35,year:2022, name:'IAEA Programme — Study Trip', date:'', dateText:'2022',
+   level:'International', type:8, teams:1, maxMembers:6, venue:'Jordan', organiser:'IAEA', status:'Completed'},
+  {id:36,year:2023, name:'YIC Chumbaka — SCaTFair / STEM Playground, Sarawak Career & Training Fair 2023',
+   date:'', dateText:'2023', level:'National', type:5, teams:6, maxMembers:4, venue:'', organiser:'YIC Chumbaka', status:'Completed'},
+  {id:37,year:2023, name:'Shell NXplorers 2023', date:'', dateText:'2023',
+   level:'National', type:5, teams:1, maxMembers:4, venue:'', organiser:'Shell', status:'Completed'},
+  {id:38,year:2023, name:'Young STEMist Conference — Kategori Sains Sosial (KPM)', date:'', dateText:'2023',
+   level:'National', type:3, teams:1, maxMembers:4, venue:'Sarawak', organiser:'KPM', status:'Completed'},
+  {id:39,year:2023, name:'IAEA Programme — Study Trip', date:'', dateText:'2023',
+   level:'International', type:8, teams:1, maxMembers:6, venue:'Vienna, Austria', organiser:'IAEA', status:'Completed'},
+  {id:40,year:2024, name:'Youth Innovative Science Fair (YNSF & YISF)', date:'2024-03-02', dateText:'2 Mac 2024',
+   level:'International', type:3, teams:1, maxMembers:4, venue:'Malang, Indonesia', organiser:'', status:'Completed'},
+  {id:41,year:2024, name:'Youth Innovative Challenge — STEM Playground', date:'', dateText:'7–8 Sep 2024',
+   level:'National', type:5, teams:1, maxMembers:4, venue:'Pustaka Negeri Sarawak, Miri', organiser:'YIC', status:'Completed'},
+  {id:42,year:2024, name:'Youth Innovative Challenge & IEEE — Sarawak Maker Fair Prize-Giving Ceremony',
+   date:'', dateText:'2024', level:'National', type:5, teams:5, maxMembers:4, venue:'', organiser:'YIC / IEEE', status:'Completed'},
+  {id:43,year:2024, name:'Program MADANI Rakyat & Kolokium K-PIPA 2024 — STEM & AI Showcase',
+   date:'', dateText:'2024', level:'National', type:7, teams:1, maxMembers:8, venue:'', organiser:'Kementerian Pendidikan', status:'Completed'},
+  {id:44,year:2024, name:'International Study Tour — Korea & Japan', date:'', dateText:'2024',
+   level:'International', type:8, teams:1, maxMembers:6, venue:'Korea, Japan', organiser:'', status:'Completed'},
+  {id:45,year:2025, name:'Shell NXplorers Malaysia — National Award Ceremony (Team Hopecore)',
+   date:'2025-11-01', dateText:'1 November 2025', level:'National', type:5, teams:1, maxMembers:4, venue:'Kuching', organiser:'Shell', status:'Completed'},
+  {id:46,year:2025, name:'Youth Innovative Challenge (Chumbaka / Yayasan Sime Darby Young Innovate)',
+   date:'', dateText:'2025', level:'National', type:5, teams:1, maxMembers:4, venue:'', organiser:'Chumbaka', status:'Completed'},
+  {id:47,year:2025, name:'YIC Northern Sarawak Maker Fair — Young Innovators Challenge',
+   date:'', dateText:'2025', level:'State', type:5, teams:2, maxMembers:4, venue:'', organiser:'YIC', status:'Completed'},
+  {id:48,year:2025, name:'Malaysia Youth Scientist — Malaysia Young Scientists Organisation (MYSO)',
+   date:'', dateText:'2025', level:'National', type:3, teams:1, maxMembers:4, venue:'', organiser:'MYSO', status:'Completed'},
+  {id:49,year:2025, name:'Science Castle Malaysia 2025', date:'', dateText:'2025',
+   level:'National', type:3, teams:2, maxMembers:4, venue:'', organiser:'Science Castle', status:'Completed'},
+  {id:50,year:2025, name:'Sarawak STEM Trailblazer Workshop — SMD IC Design Make-A-Thon & Pertandingan Robotik Kebangsaan 2025',
+   date:'', dateText:'2025', level:'National', type:6, teams:2, maxMembers:4, venue:'', organiser:'SMD', status:'Completed'},
+  {id:51,year:2025, name:'World SDG Challenge', date:'', dateText:'2025',
+   level:'International', type:5, teams:1, maxMembers:4, venue:'', organiser:'', status:'Completed'},
+  {id:52,year:2026, name:'Terengganu International Science Fair 2026 (TISF 2026)', date:'', dateText:'2026',
+   level:'International', type:3, teams:3, maxMembers:4, venue:'Terengganu', organiser:'', status:'Completed'},
 ];
 
 let entries = [
@@ -534,10 +647,59 @@ let entries = [
   {id:42,comp:19,name:"INTER TECH",members:[57,58,59],teacher:null,status:'Confirmed',result:'—',award:'',idea:"RUBBISH BIN (CHANGE)"},
   {id:43,comp:19,name:"INTERSTELLAR",members:[60,61,62],teacher:null,status:'Confirmed',result:'—',award:'',idea:"WATER FILTER -"},
   {id:44,comp:19,name:"NEVER TRY",members:[63,64,65],teacher:null,status:'Confirmed',result:'—',award:'',idea:"GAME FOR EDUCATION"},
-  {id:45,comp:19,name:"THE LIFE",members:[66,67,68],teacher:null,status:'Confirmed',result:'—',award:'',idea:"PICK UP RUBBISH IN SCHOOL"}
+  {id:45,comp:19,name:"THE LIFE",members:[66,67,68],teacher:null,status:'Confirmed',result:'—',award:'',idea:"PICK UP RUBBISH IN SCHOOL"},
+
+  /* ---- added from Hall_of_Fame_Achievements_2018-2026.docx ---- */
+  {id:46, comp:20, name:'Team 2018', members:[69,70,71], teacher:null, status:'Completed', result:'Gold', award:''},
+  {id:47, comp:21, name:'Team 2019', members:[72,73,74], teacher:null, status:'Completed', result:'Silver', award:'Also MyGeekMovement Runner-Up (State level)'},
+  {id:48, comp:22, name:'Team 2020', members:[], teacher:null, status:'Completed', result:'Gold', award:''},
+  {id:49, comp:23, name:'Team 2020', members:[75,76,77], teacher:null, status:'Completed', result:'Silver', award:''},
+  {id:50, comp:24, name:'Shell NXplorers team + teachers', members:[], teacher:null, status:'Completed', result:'—', award:'Sponsored Study Trip — London'},
+  {id:51, comp:25, name:'Team 2021', members:[78,73,79], teacher:null, status:'Completed', result:'Gold', award:''},
+  {id:52, comp:26, name:'Team 2021', members:[80,81,82], teacher:null, status:'Completed', result:'Silver', award:''},
+  {id:53, comp:27, name:'Team 2021', members:[83,84,85], teacher:null, status:'Completed', result:'Silver', award:''},
+  {id:54, comp:28, name:'Team 2021', members:[86,87,88], teacher:null, status:'Completed', result:'Silver', award:''},
+  {id:55, comp:29, name:'Team 2021', members:[89,90,91], teacher:null, status:'Completed', result:'Gold', award:''},
+  {id:56, comp:30, name:'Team 2021', members:[89,90], teacher:null, status:'Completed', result:'—', award:'Most Innovative Award'},
+  {id:57, comp:31, name:'Team 2021', members:[], teacher:null, status:'Completed', result:'Silver', award:''},
+  {id:58, comp:32, name:'Team 2022', members:[92,88,87,93], teacher:null, status:'Completed', result:'Gold', award:''},
+  {id:59, comp:33, name:'Team 2022', members:[94,95,96], teacher:null, status:'Completed', result:'Gold', award:''},
+  {id:60, comp:34, name:'Team 2022', members:[75,76,77], teacher:null, status:'Completed', result:'Silver', award:'2nd place'},
+  {id:61, comp:35, name:'Student delegates + teachers', members:[], teacher:null, status:'Completed', result:'—', award:'Study Trip — Jordan'},
+  {id:62, comp:36, name:'Team 1', members:[], teacher:null, status:'Completed', result:'Gold', award:''},
+  {id:63, comp:36, name:'Team 2', members:[], teacher:null, status:'Completed', result:'Gold', award:''},
+  {id:64, comp:36, name:'Team 3', members:[], teacher:null, status:'Completed', result:'Gold', award:''},
+  {id:65, comp:36, name:'Team 4', members:[], teacher:null, status:'Completed', result:'Silver', award:''},
+  {id:66, comp:36, name:'Team 5', members:[], teacher:null, status:'Completed', result:'Silver', award:''},
+  {id:67, comp:36, name:'Team 6', members:[], teacher:null, status:'Completed', result:'Bronze', award:''},
+  {id:68, comp:37, name:'Team 2023', members:[], teacher:null, status:'Completed', result:'Gold', award:''},
+  {id:69, comp:38, name:'3-member team (SMK Lutong)', members:[], teacher:null, status:'Completed', result:'Gold', award:'1st Place, Sarawak'},
+  {id:70, comp:39, name:'Student delegates + teachers', members:[], teacher:null, status:'Completed', result:'—', award:'Study Trip — Vienna'},
+  {id:71, comp:40, name:'Team 2024', members:[89,97,92], teacher:null, status:'Completed', result:'Gold', award:''},
+  {id:72, comp:41, name:'Team 2024', members:[1,10,9], teacher:null, status:'Completed', result:'Gold', award:''},
+  {id:73, comp:42, name:'Team Silver', members:[98,99], teacher:null, status:'Completed', result:'Silver', award:''},
+  {id:74, comp:42, name:'Team Bronze A', members:[100,101], teacher:null, status:'Completed', result:'Bronze', award:''},
+  {id:75, comp:42, name:'Team Bronze B', members:[3,2,18], teacher:null, status:'Completed', result:'Bronze', award:'Also Best Pitching'},
+  {id:76, comp:42, name:'Team Best Pitching', members:[11,102,103], teacher:null, status:'Completed', result:'—', award:'Best Pitching'},
+  {id:77, comp:42, name:'Team Science Track', members:[1,10,9], teacher:null, status:'Completed', result:'Silver', award:'Also Bronze — Science Tech track'},
+  {id:78, comp:43, name:'STEM Club SMK Lutong', members:[], teacher:null, status:'Completed', result:'—', award:'Exhibition booth'},
+  {id:79, comp:44, name:'Student delegates + teachers', members:[], teacher:null, status:'Completed', result:'—', award:'Study Trip — Korea & Japan'},
+  {id:80, comp:45, name:'Team Hopecore', members:[6,8,7], teacher:null, status:'Completed', result:'Champion / Johan', award:''},
+  {id:81, comp:46, name:'Team Hopecore', members:[6,8,7], teacher:null, status:'Completed', result:'Champion / Johan', award:'Best Presenters'},
+  {id:82, comp:47, name:'Team Hopecore', members:[6,8,7], teacher:null, status:'Completed', result:'Gold', award:''},
+  {id:83, comp:47, name:'Team Code Queens', members:[2,13,3], teacher:null, status:'Completed', result:'Gold', award:''},
+  {id:84, comp:48, name:'Team G.E.W.I.N', members:[1,104], teacher:null, status:'Completed', result:'Silver', award:''},
+  {id:85, comp:49, name:'Team A', members:[105,106,107], teacher:null, status:'Completed', result:'Gold', award:''},
+  {id:86, comp:49, name:'Team B', members:[108,109,110], teacher:null, status:'Completed', result:'Silver', award:'Best Poster'},
+  {id:87, comp:50, name:'IC Design Team', members:[44,111], teacher:null, status:'Completed', result:'Gold', award:''},
+  {id:88, comp:50, name:'Robotik Team', members:[6,8,16], teacher:null, status:'Completed', result:'Gold', award:''},
+  {id:89, comp:51, name:'Team 2025', members:[2,13,3], teacher:null, status:'Completed', result:'Gold', award:'Best Infographic (Jury Special Award) — Deborah'},
+  {id:90, comp:52, name:'Hornbill Team', members:[2], teacher:null, status:'Completed', result:'Gold', award:'"Endangered Species: The Hornbill — Guardian of Sarawak\'s Forests"'},
+  {id:91, comp:52, name:'FoodLoop Team', members:[2,3,19,1], teacher:null, status:'Completed', result:'Gold', award:'"FoodLoop"'},
+  {id:92, comp:52, name:'Recycle Pi2 Team', members:[13], teacher:null, status:'Completed', result:'Bronze', award:'"Recycle Pi2"'},
 ];
 
-let nextId = {comp:20, entry:46, type:10, student:69, teacher:1};
+let nextId = {comp:53, entry:93, type:10, student:112, teacher:1};
 
 /* ============================ STATE ============================ */
 let state = {year:2026, view:'dashboard', compId:null, q:'', level:'All', status:'All',
@@ -626,7 +788,7 @@ const VIEWS = [
   ['dashboard',   '◧', 'Dashboard',    '#38bdf8', 'rgba(56,189,248,.16)'],
   ['competitions','▤', 'Competitions', '#fbbf24', 'rgba(251,191,36,.16)'],
   ['students',    '◕', 'Students',     '#34d399', 'rgba(52,211,153,.16)'],
-  ['wall',        '★', 'Wall of Fame', '#f5c518', 'rgba(245,197,24,.18)'],
+  ['wall',        '★', 'Hall of Fame', '#f5c518', 'rgba(245,197,24,.18)'],
   ['reports',     '◑', 'Reports',      '#a78bfa', 'rgba(167,139,250,.16)'],
   ['settings',    '⚙', 'Settings',     '#94a3b8', 'rgba(148,163,184,.16)'],
 ];
@@ -1119,7 +1281,7 @@ function applyRole(){
   if(sel) [...sel.options].forEach(o => { if(o.value === 'new') o.remove(); });
 }
 
-/* ============================ WALL OF FAME ============================ */
+/* ============================ HALL OF FAME ============================ */
 const LOGO = () => { const el = document.querySelector('.brand .logo'); return el ? el.src : ''; };
 let photos  = {};           /* year   -> {src, cap} */
 let posters = {};           /* compId -> {src} */
@@ -1254,7 +1416,7 @@ function wall(){
   <div class="hero">
     ${LOGO() ? `<img src="${LOGO()}" alt="">` : ''}
     <div>
-      <h1>Wall of Fame</h1>
+      <h1>Hall of Fame</h1>
       <p>STEM Club SMK Lutong · ${scope}</p>
     </div>
     <div class="tally">
