@@ -1428,7 +1428,10 @@ function wall(){
   </div>
 
   <div class="row noprint" style="margin:16px 0 4px">
-    <button class="chip ${!all?'on':''}" onclick="state.wallAll=false;render()">${state.year} only</button>
+    <select onchange="state.wallAll=false;switchYear(this.value)" style="padding:7px 10px;border-radius:9px;
+             border:1px solid #24365a;background:var(--card);color:inherit;font-weight:600;font-size:13px">
+      ${years.slice().sort((a,b)=>b-a).map(y=>`<option value="${y}" ${!all && y===state.year?'selected':''}>${y}</option>`).join('')}
+    </select>
     <button class="chip ${all?'on':''}" onclick="state.wallAll=true;render()">All years</button>
     <button class="btn sm" style="margin-left:auto" onclick="window.print()">🖨 Print for notice board</button>
   </div>
