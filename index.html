@@ -1428,8 +1428,9 @@ function wall(){
   </div>
 
   <div class="row noprint" style="margin:16px 0 4px">
-    <select onchange="state.wallAll=false;switchYear(this.value)" style="padding:7px 10px;border-radius:9px;
-             border:1px solid #24365a;background:var(--card);color:inherit;font-weight:600;font-size:13px">
+    <select onchange="state.wallAll=false;switchYear(this.value)" style="padding:7px 30px 7px 12px;border-radius:9px;
+             border:1px solid #24365a;background:var(--card) url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%228%22 viewBox=%220 0 12 8%22><path d=%22M1 1l5 5 5-5%22 fill=%22none%22 stroke=%22%2394a3b8%22 stroke-width=%221.6%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/></svg>') no-repeat right 11px center;
+             color:inherit;font-weight:600;font-size:13px;-webkit-appearance:none;-moz-appearance:none;appearance:none;cursor:pointer">
       ${years.slice().sort((a,b)=>b-a).map(y=>`<option value="${y}" ${!all && y===state.year?'selected':''}>${y}</option>`).join('')}
     </select>
     <button class="chip ${all?'on':''}" onclick="state.wallAll=true;render()">All years</button>
