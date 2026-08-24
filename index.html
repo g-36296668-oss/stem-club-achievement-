@@ -736,6 +736,64 @@ let entries = [
 
 let nextId = {comp:57, entry:103, type:10, student:123, teacher:1};
 
+/* Frozen copy of the built-in seed, captured before any cloud data can
+   overwrite the live arrays. Used by "Import Hall of Fame history" below,
+   so a club that already has real live data (in Firestore) can safely
+   merge in the new historical achievements without duplicating or
+   disturbing anything a teacher has already entered. Original items
+   (from before this history was added) are id < 20 for competitions,
+   id < 46 for entries, id < 69 for students — everything at or above
+   those ids is new historical/2026 material added on top. */
+const SEED_HISTORY_YEARS        = [...years];
+const SEED_HISTORY_STUDENTS     = JSON.parse(JSON.stringify(students));
+const SEED_HISTORY_COMPETITIONS = JSON.parse(JSON.stringify(competitions));
+const SEED_HISTORY_ENTRIES      = JSON.parse(JSON.stringify(entries));
+
+function historyAlreadyImported(){
+  return competitions.some(c => c.name === 'Shell NXplorers Malaysia — National Champion 2018');
+}
+function importHallOfFameHistory(){
+  if(!canEdit){ alert('Only signed-in teachers can import.'); return; }
+  if(historyAlreadyImported()){ alert('Hall of Fame history has already been imported into this club\'s data.'); return; }
+  if(!confirm('This adds achievements, students and photos from 2018–2025 (plus 4 extra 2026 competitions) ' +
+    'into your club\'s live data.\n\nYour existing competitions, results and students will NOT be changed or removed.\n\nContinue?')) return;
+
+  const histComps    = SEED_HISTORY_COMPETITIONS.filter(c => c.id >= 20);
+  const histStudents = SEED_HISTORY_STUDENTS.filter(s => s.id >= 69);
+  const histEntries  = SEED_HISTORY_ENTRIES.filter(e => e.id >= 46);
+
+  const studentIdMap = {};
+  histStudents.forEach(s => {
+    const newId = nextId.student++;
+    studentIdMap[s.id] = newId;
+    students.push({...s, id:newId});
+  });
+
+  const compIdMap = {};
+  histComps.forEach(c => {
+    const newId = nextId.comp++;
+    compIdMap[c.id] = newId;
+    competitions.push({...c, id:newId});
+    if(DEFAULT_POSTERS[c.id]){
+      posters[newId] = DEFAULT_POSTERS[c.id];
+      savePoster(newId);
+    }
+  });
+
+  histEntries.forEach(e => {
+    const newId = nextId.entry++;
+    entries.push({...e, id:newId, comp: compIdMap[e.comp] ?? e.comp,
+      members: e.members.map(m => studentIdMap[m] ?? m)});
+  });
+
+  SEED_HISTORY_YEARS.forEach(y => { if(!years.includes(y)) years.push(y); });
+
+  render();
+  saveNow();
+  alert(`Imported ${histComps.length} competitions, ${histEntries.length} results and ${histStudents.length} students. ` +
+        `Photos will finish saving in the background.`);
+}
+
 /* ============================ STATE ============================ */
 let state = {year:2026, view:'dashboard', compId:null, q:'', level:'All', status:'All',
              type:'All', expanded:null, reportLevel:'All', sfilter:'Active', sort:'date', wallAll:false};
@@ -1304,7 +1362,7 @@ function updateAcct(){
 }
 
 /* --- view-only: strip every editing control after each render --- */
-const EDIT_FNS = /^(pickPoster|removePoster|toggleOpen|openComp|openGroup|delComp|delGroup|openStudent|delStudent|toggleLeft|duplicateComp|saveComp|saveGroup|saveStudent|addType|renameType|changeIcon|delType|addTeacher|renameTeacher|delTeacher|addTeacherInline|newTypeInline|newSession|pickPhoto|removePhoto|captionPhoto|moveComp|openImport|runImport|openDupes|resetOrder|setSort)\b/;
+const EDIT_FNS = /^(pickPoster|removePoster|toggleOpen|openComp|openGroup|delComp|delGroup|openStudent|delStudent|toggleLeft|duplicateComp|saveComp|saveGroup|saveStudent|addType|renameType|changeIcon|delType|addTeacher|renameTeacher|delTeacher|addTeacherInline|newTypeInline|newSession|pickPhoto|removePhoto|captionPhoto|moveComp|openImport|runImport|openDupes|resetOrder|setSort|importHallOfFameHistory)\b/;
 function applyRole(){
   if(canEdit || !cloudOn()) return;
   document.querySelectorAll('#main [onclick], .panel [onclick]').forEach(el => {
@@ -2119,6 +2177,18 @@ function settings(){
   return `
   <h1>Settings</h1>
   <p class="sub">Years, lists and data for STEM Club SMK Lutong.</p>
+
+  ${!historyAlreadyImported() ? `
+  <div class="card" style="margin-bottom:20px;border-color:#f5c518">
+    <div class="spread">
+      <div>
+        <div class="title">📜 Import Hall of Fame history (2018–2025)</div>
+        <div class="meta" style="margin-top:4px">Adds past achievements, students and photos from the club's Hall of
+          Fame records. Your existing competitions, results and students are not touched.</div>
+      </div>
+      <button class="btn primary" style="flex-shrink:0" onclick="importHallOfFameHistory()">Import</button>
+    </div>
+  </div>` : ''}
 
   <div class="spread">
     <h2 style="margin-bottom:0">Club years</h2>
