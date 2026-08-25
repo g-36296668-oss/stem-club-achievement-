@@ -752,6 +752,32 @@ const SEED_HISTORY_ENTRIES      = JSON.parse(JSON.stringify(entries));
 function historyAlreadyImported(){
   return competitions.some(c => c.name === 'Shell NXplorers Malaysia — National Champion 2018');
 }
+
+/* Some photos in the Hall of Fame doc belong to competitions that already
+   existed live (SEASCO, Shanghai trip, BIICC, GirlCode) — these are matched
+   by name (not id, since ids differ per club) and can be safely re-run any
+   time; it only fills in a photo if one isn't already attached. */
+const LEGACY_POSTER_FIX = {
+  'SEASCO Olympiad — Southeast Asia Computer Science (International Round)': 1,
+  'Shanghai Study Tour': 2,
+  'BIICC (Offline)': 4,
+  'GirlCode': 18,
+};
+function fixLegacyPosters(silent){
+  if(!canEdit){ if(!silent) alert('Only signed-in teachers can do this.'); return; }
+  let count = 0;
+  Object.entries(LEGACY_POSTER_FIX).forEach(([name, seedId]) => {
+    const c = competitions.find(x => x.name === name);
+    if(c && DEFAULT_POSTERS[seedId] && !posters[c.id]){
+      posters[c.id] = DEFAULT_POSTERS[seedId];
+      savePoster(c.id);
+      count++;
+    }
+  });
+  if(count) render();
+  if(!silent) alert(count ? `Attached ${count} photo(s) to your existing competitions.` : 'All photos are already attached — nothing to fix.');
+}
+
 function importHallOfFameHistory(){
   if(!canEdit){ alert('Only signed-in teachers can import.'); return; }
   if(historyAlreadyImported()){ alert('Hall of Fame history has already been imported into this club\'s data.'); return; }
@@ -788,6 +814,7 @@ function importHallOfFameHistory(){
 
   SEED_HISTORY_YEARS.forEach(y => { if(!years.includes(y)) years.push(y); });
 
+  fixLegacyPosters(true);
   render();
   saveNow();
   alert(`Imported ${histComps.length} competitions, ${histEntries.length} results and ${histStudents.length} students. ` +
@@ -1362,7 +1389,7 @@ function updateAcct(){
 }
 
 /* --- view-only: strip every editing control after each render --- */
-const EDIT_FNS = /^(pickPoster|removePoster|toggleOpen|openComp|openGroup|delComp|delGroup|openStudent|delStudent|toggleLeft|duplicateComp|saveComp|saveGroup|saveStudent|addType|renameType|changeIcon|delType|addTeacher|renameTeacher|delTeacher|addTeacherInline|newTypeInline|newSession|pickPhoto|removePhoto|captionPhoto|moveComp|openImport|runImport|openDupes|resetOrder|setSort|importHallOfFameHistory)\b/;
+const EDIT_FNS = /^(pickPoster|removePoster|toggleOpen|openComp|openGroup|delComp|delGroup|openStudent|delStudent|toggleLeft|duplicateComp|saveComp|saveGroup|saveStudent|addType|renameType|changeIcon|delType|addTeacher|renameTeacher|delTeacher|addTeacherInline|newTypeInline|newSession|pickPhoto|removePhoto|captionPhoto|moveComp|openImport|runImport|openDupes|resetOrder|setSort|importHallOfFameHistory|fixLegacyPosters)\b/;
 function applyRole(){
   if(canEdit || !cloudOn()) return;
   document.querySelectorAll('#main [onclick], .panel [onclick]').forEach(el => {
@@ -2188,7 +2215,17 @@ function settings(){
       </div>
       <button class="btn primary" style="flex-shrink:0" onclick="importHallOfFameHistory()">Import</button>
     </div>
-  </div>` : ''}
+  </div>` : `
+  <div class="card" style="margin-bottom:20px">
+    <div class="spread">
+      <div>
+        <div class="title">🖼 Fix missing 2026 photos</div>
+        <div class="meta" style="margin-top:4px">If SEASCO, the Shanghai trip, BIICC or GirlCode are missing their
+          Hall of Fame photo, this attaches them. Safe to run any time — it only fills in photos that aren't set yet.</div>
+      </div>
+      <button class="btn" style="flex-shrink:0" onclick="fixLegacyPosters()">Fix photos</button>
+    </div>
+  </div>`}
 
   <div class="spread">
     <h2 style="margin-bottom:0">Club years</h2>
