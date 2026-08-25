@@ -755,27 +755,31 @@ function historyAlreadyImported(){
 
 /* Some photos in the Hall of Fame doc belong to competitions that already
    existed live (SEASCO, Shanghai trip, BIICC, GirlCode) — these are matched
-   by name (not id, since ids differ per club) and can be safely re-run any
-   time; it only fills in a photo if one isn't already attached. */
-const LEGACY_POSTER_FIX = {
-  'SEASCO Olympiad — Southeast Asia Computer Science (International Round)': 1,
-  'Shanghai Study Tour': 2,
-  'BIICC (Offline)': 4,
-  'GirlCode': 18,
-};
+   by a short keyword in the name (not exact name or id, since exact wording
+   and ids can differ per club) and can be safely re-run any time; it only
+   fills in a photo if one isn't already attached. */
+const LEGACY_POSTER_FIX = [
+  {keyword:'seasco',   seedId:1},
+  {keyword:'shanghai', seedId:2},
+  {keyword:'biicc',    seedId:4},
+  {keyword:'girlcode', seedId:18},
+];
 function fixLegacyPosters(silent){
   if(!canEdit){ if(!silent) alert('Only signed-in teachers can do this.'); return; }
-  let count = 0;
-  Object.entries(LEGACY_POSTER_FIX).forEach(([name, seedId]) => {
-    const c = competitions.find(x => x.name === name);
-    if(c && DEFAULT_POSTERS[seedId] && !posters[c.id]){
+  let count = 0, matched = [];
+  LEGACY_POSTER_FIX.forEach(({keyword, seedId}) => {
+    const c = competitions.find(x => x.name && x.name.toLowerCase().includes(keyword));
+    if(c) matched.push(c.name);
+    if(c && DEFAULT_POSTERS[seedId] && !(posters[c.id] && posters[c.id].src)){
       posters[c.id] = DEFAULT_POSTERS[seedId];
       savePoster(c.id);
       count++;
     }
   });
   if(count) render();
-  if(!silent) alert(count ? `Attached ${count} photo(s) to your existing competitions.` : 'All photos are already attached — nothing to fix.');
+  if(!silent) alert(count ? `Attached ${count} photo(s) to: ${matched.join(', ')}.`
+    : matched.length ? `Found ${matched.join(', ')}, but they already have photos — nothing to fix.`
+    : 'Could not find SEASCO / Shanghai / BIICC / GirlCode by name in your competitions — nothing changed.');
 }
 
 function importHallOfFameHistory(){
