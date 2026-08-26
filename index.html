@@ -202,8 +202,11 @@
 
   .photoband{position:relative;border-radius:14px;overflow:hidden;border:1px solid var(--line);
              background:var(--card);margin:14px 0 6px}
+  .photoband.sm{margin:0;border-radius:10px}
   .photoband img{width:100%;display:block;max-height:360px;object-fit:cover}
   .photoband .tools{position:absolute;top:10px;right:10px;display:flex;gap:6px}
+  .photoband.sm .tools{top:6px;right:6px;gap:4px}
+  .photoband.sm .tools button{padding:4px 8px;font-size:11px}
   .photoband .tools button{background:rgba(17,24,39,.72);color:#fff;border:0;border-radius:7px;
                            padding:5px 10px;font-size:12px;font-weight:600;backdrop-filter:blur(4px)}
   .photoband .cap2{padding:9px 14px;font-size:12.5px;color:var(--muted);display:flex;
@@ -1567,8 +1570,16 @@ function wall(){
     return w.sort((a,b) => ({gold:0,silver:1,bronze:2}[a.m] ?? 3) - ({gold:0,silver:1,bronze:2}[b.m] ?? 3));
   };
   const card = ({c,e,m}) => `<div class="fcard ${m || 'special'}">
-      ${posters[c.id] ? `<img src="${posters[c.id].src}" alt="" style="width:100%;border-radius:10px;
-          margin-bottom:8px;display:block;aspect-ratio:16/10;object-fit:cover">` : ''}
+      ${posters[c.id] ? `<div class="photoband sm" style="margin-bottom:8px">
+          <img src="${posters[c.id].src}" alt="" style="aspect-ratio:16/10;object-fit:cover;max-height:none">
+          ${canEdit ? `<div class="tools noprint">
+              <button onclick="event.stopPropagation();pickPoster(${c.id})">Replace</button>
+              <button onclick="event.stopPropagation();removePoster(${c.id})">Remove</button>
+            </div>` : ''}
+        </div>`
+        : canEdit ? `<div class="dropzone sm noprint" style="margin-bottom:8px;padding:10px" onclick="pickPoster(${c.id})">
+            <div style="font-weight:600;font-size:12.5px">＋ Add a photo</div>
+          </div>` : ''}
       <div class="res">${{gold:'🥇',silver:'🥈',bronze:'🥉'}[m] || '⭐'} ${esc(e.result === '—' ? (e.award || 'Special award') : e.result)}</div>
       <div class="names">${e.members.length
           ? e.members.map(id => `<b>${esc(student(id).name)}</b>${student(id).cls ? ` <span style="color:var(--muted)">${esc(student(id).cls)}</span>` : ''}`).join('<br>')
