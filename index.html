@@ -828,6 +828,145 @@ function importHallOfFameHistory(){
         `Photos will finish saving in the background.`);
 }
 
+/* Safe, idempotent import of the achievements documented in the "SMK Lutong
+   STEM Achievements 2026" slide deck that aren't already in the club's data.
+   Each item is matched by a short lowercase keyword against existing
+   competition names, so if a teacher already entered one of these live
+   (under slightly different wording) it will be skipped rather than
+   duplicated. Students are matched by exact name and created only if truly
+   new. Safe to run more than once — anything already present is skipped. */
+const NEW_2026_ACHIEVEMENTS = [
+  { keyword:'nxplorers global',
+    comp:{name:'Shell NXplorers Global Awards 2026', date:'2026-03-01', dateText:'Feb – Mar 2026',
+      level:'International', type:5, teams:1, maxMembers:4, venue:'', organiser:'Shell NXplorers', status:'Completed'},
+    entries:[ {name:'Team Hopecore', members:['Lee Sun','Leann Yii Zhen','Lukesh a/l Murugayah'],
+      result:'Special Award', award:'Merit Award — Exceptional Student Project category'} ] },
+
+  { keyword:'hacking medicine',
+    comp:{name:'MIT Hacking Medicine Hackathon', date:'2026-07-10', dateText:'10 Jul 2026',
+      level:'International', type:2, teams:1, maxMembers:4, venue:'MIT App Inventor Global Education Summit 2026 (Online)',
+      organiser:'MIT App Inventor Foundation', status:'Completed'},
+    entries:[ {name:'Team', members:['Deborah Wong En Xuan','Meghan Wee','Loon Kai Rou'],
+      result:'2nd Runner-up', award:''} ] },
+
+  { keyword:'pbl stem bersepadu',
+    comp:{name:'PBL STEM Bersepadu — Simposium Duta Guru Sarawak', date:'2026-08-21', dateText:'21–22 Aug 2026',
+      level:'State', type:5, teams:5, maxMembers:4, venue:'Curtin University Malaysia, Miri',
+      organiser:'Simposium Duta Guru Sarawak', status:'Completed'},
+    entries:[ {name:'All 5 STEM Club teams', members:[],
+      result:'Gold', award:'5 student teams and their teacher mentors'} ] },
+
+  { keyword:'action research',
+    comp:{name:'Action Research Presentation — Simposium Duta Guru', date:'2026-08-21', dateText:'21–22 Aug 2026',
+      level:'State', type:3, teams:1, maxMembers:4, venue:'Curtin University Malaysia, Miri',
+      organiser:'Simposium Duta Guru Sarawak', status:'Completed'},
+    entries:[ {name:'Cikgu Susie binti Boniface & Cikgu Wee Wei Chien', members:[],
+      result:'Gold', award:'Teacher action-research presentation — "Cutof" technique for Form 5 rotation geometry'} ] },
+
+  { keyword:'algebra nextgen',
+    comp:{name:'Algebra NextGen STEM Challenge 2026', date:'2026-08-28', dateText:'28 Aug 2026',
+      level:'National', type:4, teams:2, maxMembers:1, venue:'Online', organiser:'', status:'Completed'},
+    entries:[
+      {name:'Muhammad Labeeb Aryan bin Mohd Lokman', members:['Muhammad Labeeb Aryan bin Mohd Lokman'],
+        result:'Champion / Johan', award:'Johan, Overall and Form 3'},
+      {name:'Isabelle Hii Yi Shin', members:['Isabelle Hii Yi Shin'],
+        result:'Finalist', award:'5th place, Form 3 (29th overall)'} ] },
+
+  { keyword:'wsdg challenge',
+    comp:{name:'WSDG Challenge 2026', date:'2026-09-23', dateText:'23–29 Sep 2026',
+      level:'International', type:5, teams:1, maxMembers:4, venue:'Multimedia University', organiser:'', status:'Completed'},
+    entries:[ {name:'Synapse Trio', members:['Lee Wynn','Laiqa Ashadieeyah binti Mohd Lokman','Geoff Ejoe'],
+      result:'Gold', award:'Project MicroSense'} ] },
+
+  { keyword:'sdyic',
+    comp:{name:'SDYIC Innovation Summit 2026', date:'2026-09-23', dateText:'23–29 Sep 2026',
+      level:'National', type:5, teams:1, maxMembers:4, venue:'UKM, Bangi', organiser:'Yayasan Sime Darby', status:'Completed'},
+    entries:[ {name:'LUGOSS Fighters', members:[],
+      result:'Champion / Johan', award:'YSD Innovation Grant, up to RM10,000; Best Presenter: Muhammad Labeeb Aryan'} ] },
+
+  { keyword:'chemistry debate',
+    comp:{name:'Curtin Chemistry Debate 2026', date:'2026-09-30', dateText:'30 Sep – 1 Oct 2026',
+      level:'State', type:3, teams:2, maxMembers:4, venue:'Curtin University Malaysia',
+      organiser:'ACS Curtin Malaysia Student Chapter', status:'Completed'},
+    entries:[
+      {name:'CALomel Conglomerates (Senior)', members:['Alicia Lim Ghzi Qinn','Lee Sun','Cheryl Chan'],
+        result:'Champion / Johan', award:'Beat UNIMAS in Grand Final; won RM3,000'},
+      {name:'Junior team', members:[], result:'Finalist', award:'Quarter-finalists'} ] },
+
+  { keyword:'nxplorers malaysia 2026',
+    comp:{name:'Shell NXplorers Malaysia 2026 — Sarawak Final', date:'2026-10-05', dateText:'5 Oct 2026',
+      level:'State', type:5, teams:2, maxMembers:4, venue:'One Shell Square, Miri', organiser:'Shell NXplorers', status:'Completed'},
+    entries:[
+      {name:'Team Scam Busters', members:['Muhammad Labeeb Aryan bin Mohd Lokman','Deborah Wong En Xuan','Isabelle Hii Yi Shin'],
+        result:'Champion / Johan', award:'ScamShield — Sarawak Final'},
+      {name:'Merdeka Challenge 2026', members:[], result:'Special Award', award:'Winners, Merdeka Challenge 2026 (7 students)'} ] },
+
+  { keyword:'digitalisation in research',
+    comp:{name:'Digitalisation in Research and Innovation Competition', date:'2026-10-20', dateText:'20–21 Oct 2026',
+      level:'National', type:5, teams:1, maxMembers:4, venue:'IPG Kampus Sarawak, Miri',
+      organiser:'Pedagogy and Teacher Education Conference Sarawak Zone 2026', status:'Completed'},
+    entries:[ {name:'Jacob Gabriel Law & Law En Ning', members:['Jacob Gabriel Law','Law En Ning'],
+      result:'Champion / Johan', award:''} ] },
+];
+
+/* BrightSparx Finals: a new result on the EXISTING BrightSparx competition,
+   not a new competition — matched the same way, by keyword. */
+const NEW_2026_BRIGHTSPARX_FINALS = {
+  keyword:'brightspar',
+  entry:{name:'SDRC BrightSparx Finals', members:[], result:'2nd Runner-up', award:'SDRC BrightSparx Finals'}
+};
+
+function achievements2026AlreadyImported(){
+  return competitions.some(c => c.name === 'MIT Hacking Medicine Hackathon');
+}
+function resolveStudentId(name){
+  const hit = students.find(s => s.name.toLowerCase() === name.toLowerCase());
+  if(hit) return hit.id;
+  const id = nextId.student++;
+  students.push({id, name, cls:''});
+  return id;
+}
+function import2026Achievements(){
+  if(!canEdit){ alert('Only signed-in teachers can import.'); return; }
+  if(achievements2026AlreadyImported()){ alert('The 2026 achievements update has already been imported into this club\'s data.'); return; }
+  if(!confirm('This adds the competitions and results from the "SMK Lutong STEM Achievements 2026" slides that ' +
+    'aren\'t already in your data (matched by name, so anything already entered is skipped, never duplicated).\n\n' +
+    'Your existing competitions, results and students will NOT be changed or removed.\n\nContinue?')) return;
+
+  let compCount = 0, entryCount = 0, skipped = [];
+
+  NEW_2026_ACHIEVEMENTS.forEach(item => {
+    const exists = competitions.some(c => c.name && c.name.toLowerCase().includes(item.keyword));
+    if(exists){ skipped.push(item.comp.name); return; }
+    const compId = nextId.comp++;
+    competitions.push({...item.comp, id:compId, year:2026});
+    compCount++;
+    item.entries.forEach(e => {
+      const memberIds = e.members.map(resolveStudentId);
+      entries.push({id: nextId.entry++, comp: compId, name:e.name, members:memberIds,
+        teacher:null, status:'Completed', result:e.result, award:e.award});
+      entryCount++;
+    });
+  });
+
+  const bx = NEW_2026_BRIGHTSPARX_FINALS;
+  const bxComp = competitions.find(c => c.name && c.name.toLowerCase().includes(bx.keyword));
+  if(bxComp){
+    const already = entries.some(e => e.comp === bxComp.id && e.award === bx.entry.award);
+    if(!already){
+      entries.push({id: nextId.entry++, comp: bxComp.id, name:bx.entry.name,
+        members: bx.entry.members.map(resolveStudentId), teacher:null, status:'Completed',
+        result: bx.entry.result, award: bx.entry.award});
+      entryCount++;
+    }
+  }
+
+  render();
+  saveNow();
+  alert(`Imported ${compCount} new competition${compCount===1?'':'s'} and ${entryCount} result${entryCount===1?'':'s'}.` +
+    (skipped.length ? `\n\nSkipped (already found in your data, matched by name): ${skipped.join(', ')}.` : ''));
+}
+
 /* ============================ STATE ============================ */
 let state = {year:2026, view:'dashboard', compId:null, q:'', level:'All', status:'All',
              type:'All', expanded:null, reportLevel:'All', sfilter:'Active', sort:'date', wallAll:false};
@@ -2241,6 +2380,19 @@ function settings(){
       <button class="btn" style="flex-shrink:0" onclick="fixLegacyPosters()">Fix photos</button>
     </div>
   </div>`}
+
+  ${!achievements2026AlreadyImported() ? `
+  <div class="card" style="margin-bottom:20px;border-color:#f5c518">
+    <div class="spread">
+      <div>
+        <div class="title">🏆 Import 2026 achievements update</div>
+        <div class="meta" style="margin-top:4px">Adds the competitions and results from the "SMK Lutong STEM
+          Achievements 2026" slides that aren't already in your data. Anything already entered (matched by
+          name) is skipped, never duplicated — safe to run any time.</div>
+      </div>
+      <button class="btn primary" style="flex-shrink:0" onclick="import2026Achievements()">Import</button>
+    </div>
+  </div>` : ''}
 
   <div class="spread">
     <h2 style="margin-bottom:0">Club years</h2>
