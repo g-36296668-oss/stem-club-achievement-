@@ -1426,10 +1426,13 @@ function scheduleSave(){
   if(JSON.stringify(packCore()) === lastSaved) return;    /* nothing actually changed */
   clearTimeout(saveTimer);
   chip('Saving…');
+  pendingSave = true;                                     /* local edit waiting to be written */
   saveTimer = setTimeout(saveNow, 800);
 }
+let pendingSave = false;
 function saveNow(){
   if(!db || !canEdit) return;
+  pendingSave = false;
   lastSaved = JSON.stringify(packCore());                 /* remember before writing */
   db.collection('club').doc('data').set(packData())
     .then(() => chip('All changes saved', 1800))
@@ -1495,6 +1498,7 @@ function bootCloud(){
 function listen(){
   db.collection('club').doc('data').onSnapshot(snap => {
     if(snap.exists){
+      if(canEdit && pendingSave) return;   /* don't let an older server copy wipe an edit that hasn't saved yet */
       unpackData(snap.data());
       lastSaved = JSON.stringify(packCore());   /* in step with the server — do not write it back */
       render();
